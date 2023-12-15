@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.mercadolibre</groupId>
-	<artifactId>be_java_hisp_w23_g2</artifactId>
+	<artifactId>grupo2-sprint1</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>be_java_hisp_w23_g2</name>
+	<name>grupo2-sprint1</name>
 	<description>Sprint 1</description>
 	<properties>
 		<java.version>17</java.version>
