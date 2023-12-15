@@ -22,8 +22,9 @@ public class UserController {
     public ResponseEntity<?> getFollowersCountSeller(@PathVariable int userId) {
         return ResponseEntity.ok(userService.getFollowersCountSeller(userId));
     }
-        @GetMapping("/all")
-        public ResponseEntity<?> getAll () {
-            return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
-        }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAll() {
+        return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
+}

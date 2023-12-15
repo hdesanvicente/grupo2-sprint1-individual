@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface IUserService {
     UserFollowersCountDTO getFollowersCountSeller(int userId);
+
     List<UserDTO> getAll();
 
 }

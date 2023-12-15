@@ -26,7 +26,7 @@ public class UserService implements IUserService {
         if (user == null) {
             throw new NotFoundException("User with id = " + userId + " not found");
         }
-        return new UserFollowersCountDTO(user.getId(), user.getUserName(),user.getFollowers().size());
+        return new UserFollowersCountDTO(user.getId(), user.getUserName(), user.getFollowers().size());
     }
 
     public List<UserDTO> getAll() {

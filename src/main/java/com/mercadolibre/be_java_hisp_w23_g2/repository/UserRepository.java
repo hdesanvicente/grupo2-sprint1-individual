@@ -27,7 +27,8 @@ public class UserRepository implements IUserRepository {
             e.printStackTrace();
         }
         ObjectMapper objectMapper = new ObjectMapper();
-        TypeReference<List<User>> typeRef = new TypeReference<>() {};
+        TypeReference<List<User>> typeRef = new TypeReference<>() {
+        };
         List<User> users = null;
         try {
             users = objectMapper.readValue(file, typeRef);
