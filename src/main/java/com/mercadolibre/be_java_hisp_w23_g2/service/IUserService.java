@@ -10,4 +10,5 @@ public interface IUserService {
 
     List<UserDTO> getAll();
 
+    List<UserDTO> getFollowersUser(int userId);
 }

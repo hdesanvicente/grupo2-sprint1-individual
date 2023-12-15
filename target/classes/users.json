@@ -540,10 +540,6 @@
       {
         "user_id": 14,
         "user_name": "Lucas King"
-      },
-      {
-        "user_id": 15,
-        "user_name": "Mia Wright"
       }
     ]
   },
@@ -579,10 +575,6 @@
     ],
     "followed": [
       {
-        "user_id": 15,
-        "user_name": "Mia Wright"
-      },
-      {
         "user_id": 11,
         "user_name": "Sophia Taylor"
       }
@@ -609,14 +601,6 @@
       }
     ],
     "followers": [
-      {
-        "user_id": 14,
-        "user_name": "Lucas King"
-      },
-      {
-        "user_id": 13,
-        "user_name": "Scarlett Bell"
-      }
     ],
     "followed": [
       {
