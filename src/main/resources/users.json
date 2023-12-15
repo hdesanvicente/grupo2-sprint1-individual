@@ -1,0 +1,634 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "userName": "John Doe",
+      "posts": [
+        {
+          "id": 101,
+          "userId": 1,
+          "date": "2023-01-15T08:30:00Z",
+          "product": {
+            "id": 201,
+            "name": "Laptop Pro",
+            "type": "Electronics",
+            "brand": "TechMaster",
+            "color": "Silver",
+            "notes": "Powerful laptop for professionals."
+          },
+          "category": "Electronics",
+          "price": 1200.00
+        },
+        {
+          "id": 102,
+          "userId": 1,
+          "date": "2023-02-20T14:45:00Z",
+          "product": {
+            "id": 202,
+            "name": "Smartphone X",
+            "type": "Electronics",
+            "brand": "SmartTech",
+            "color": "Black",
+            "notes": "Latest smartphone with AI features."
+          },
+          "category": "Electronics",
+          "price": 800.00
+        }
+      ],
+      "followers": [
+        {
+          "id": 2,
+          "userName": "Alice Smith"
+        },
+        {
+          "id": 3,
+          "userName": "Bob Jones"
+        }
+      ],
+      "followed": [
+        {
+          "id": 4,
+          "userName": "Eve Wilson"
+        },
+        {
+          "id": 5,
+          "userName": "Charlie Brown"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "userName": "Alice Smith",
+      "posts": [
+        {
+          "id": 103,
+          "userId": 2,
+          "date": "2023-03-05T11:15:00Z",
+          "product": {
+            "id": 203,
+            "name": "Camera Pro",
+            "type": "Photography",
+            "brand": "SnapMaster",
+            "color": "Red",
+            "notes": "High-resolution camera for photography enthusiasts."
+          },
+          "category": "Photography",
+          "price": 500.00
+        }
+      ],
+      "followers": [
+        {
+          "id": 1,
+          "userName": "John Doe"
+        },
+        {
+          "id": 3,
+          "userName": "Bob Jones"
+        }
+      ],
+      "followed": [
+        {
+          "id": 4,
+          "userName": "Eve Wilson"
+        },
+        {
+          "id": 5,
+          "userName": "Charlie Brown"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "userName": "Bob Jones",
+      "posts": [
+        {
+          "id": 104,
+          "userId": 3,
+          "date": "2023-04-10T09:30:00Z",
+          "product": {
+            "id": 204,
+            "name": "Gaming Console",
+            "type": "Gaming",
+            "brand": "GameMaster",
+            "color": "Black",
+            "notes": "Next-gen gaming console for hardcore gamers."
+          },
+          "category": "Gaming",
+          "price": 600.00
+        }
+      ],
+      "followers": [
+        {
+          "id": 1,
+          "userName": "John Doe"
+        },
+        {
+          "id": 2,
+          "userName": "Alice Smith"
+        }
+      ],
+      "followed": [
+        {
+          "id": 4,
+          "userName": "Eve Wilson"
+        },
+        {
+          "id": 5,
+          "userName": "Charlie Brown"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "userName": "Eve Wilson",
+      "posts": [
+        {
+          "id": 105,
+          "userId": 4,
+          "date": "2023-05-20T14:00:00Z",
+          "product": {
+            "id": 205,
+            "name": "Smart Watch",
+            "type": "Wearable",
+            "brand": "TechWear",
+            "color": "Silver",
+            "notes": "Smartwatch with fitness tracking and notifications."
+          },
+          "category": "Wearable",
+          "price": 150.00
+        }
+      ],
+      "followers": [
+        {
+          "id": 1,
+          "userName": "John Doe"
+        },
+        {
+          "id": 2,
+          "userName": "Alice Smith"
+        }
+      ],
+      "followed": [
+        {
+          "id": 3,
+          "userName": "Bob Jones"
+        },
+        {
+          "id": 5,
+          "userName": "Charlie Brown"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "userName": "Charlie Brown",
+      "posts": [
+        {
+          "id": 106,
+          "userId": 5,
+          "date": "2023-06-30T16:45:00Z",
+          "product": {
+            "id": 206,
+            "name": "Wireless Earbuds",
+            "type": "Audio",
+            "brand": "SoundBliss",
+            "color": "White",
+            "notes": "High-quality wireless earbuds for immersive audio."
+          },
+          "category": "Audio",
+          "price": 80.00
+        }
+      ],
+      "followers": [
+        {
+          "id": 1,
+          "userName": "John Doe"
+        },
+        {
+          "id": 2,
+          "userName": "Alice Smith"
+        }
+      ],
+      "followed": [
+        {
+          "id": 3,
+          "userName": "Bob Jones"
+        },
+        {
+          "id": 4,
+          "userName": "Eve Wilson"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "userName": "emma_green",
+      "posts": [
+        {
+          "id": 107,
+          "userId": 6,
+          "date": "2023-07-15T09:30:00Z",
+          "product": {
+            "id": 207,
+            "name": "Digital Camera",
+            "type": "Photography",
+            "brand": "PixelMaster",
+            "color": "Black",
+            "notes": "Professional-grade digital camera for photographers."
+          },
+          "category": "Photography",
+          "price": 900.00
+        }
+      ],
+      "followers": [
+        {
+          "id": 5,
+          "userName": "charlie_brown"
+        },
+        {
+          "id": 7,
+          "userName": "olivia_white"
+        }
+      ],
+      "followed": [
+        {
+          "id": 8,
+          "userName": "liam_black"
+        },
+        {
+          "id": 9,
+          "userName": "ava_baker"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "userName": "Olivia White",
+      "posts": [
+        {
+          "id": 108,
+          "userId": 7,
+          "date": "2023-08-05T14:45:00Z",
+          "product": {
+            "id": 208,
+            "name": "Fitness Tracker",
+            "type": "Wearable",
+            "brand": "FitGuru",
+            "color": "Blue",
+            "notes": "Track your fitness goals with this advanced tracker."
+          },
+          "category": "Wearable",
+          "price": 120.00
+        }
+      ],
+      "followers": [
+        {
+          "id": 6,
+          "userName": "Emma Green"
+        },
+        {
+          "id": 8,
+          "userName": "Liam Black"
+        }
+      ],
+      "followed": [
+        {
+          "id": 9,
+          "userName": "Ava Baker"
+        },
+        {
+          "id": 10,
+          "userName": "Noah Miller"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "userName": "Liam Black",
+      "posts": [
+        {
+          "id": 109,
+          "userId": 8,
+          "date": "2023-09-10T11:30:00Z",
+          "product": {
+            "id": 209,
+            "name": "Gaming Mouse",
+            "type": "Gaming",
+            "brand": "GameMaster",
+            "color": "RGB",
+            "notes": "High-performance gaming mouse for gamers."
+          },
+          "category": "Gaming",
+          "price": 50.00
+        }
+      ],
+      "followers": [
+        {
+          "id": 6,
+          "userName": "Emma Green"
+        },
+        {
+          "id": 7,
+          "userName": "Olivia White"
+        }
+      ],
+      "followed": [
+        {
+          "id": 9,
+          "userName": "Ava Baker"
+        },
+        {
+          "id": 10,
+          "userName": "Noah Miller"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "userName": "Ava Baker",
+      "posts": [
+        {
+          "id": 110,
+          "userId": 9,
+          "date": "2023-10-20T16:00:00Z",
+          "product": {
+            "id": 210,
+            "name": "Wireless Headphones",
+            "type": "Audio",
+            "brand": "SoundBliss",
+            "color": "Black",
+            "notes": "Immersive audio experience with wireless convenience."
+          },
+          "category": "Audio",
+          "price": 100.00
+        }
+      ],
+      "followers": [
+        {
+          "id": 6,
+          "userName": "Emma Green"
+        },
+        {
+          "id": 8,
+          "userName": "Liam Black"
+        }
+      ],
+      "followed": [
+        {
+          "id": 7,
+          "userName": "Olivia White"
+        },
+        {
+          "id": 10,
+          "userName": "Noah Miller"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "userName": "Noah Miller",
+      "posts": [
+        {
+          "id": 111,
+          "userId": 10,
+          "date": "2023-11-30T19:15:00Z",
+          "product": {
+            "id": 211,
+            "name": "Smart Home Hub",
+            "type": "Smart Home",
+            "brand": "TechHome",
+            "color": "White",
+            "notes": "Control your smart home devices with this hub."
+          },
+          "category": "Smart Home",
+          "price": 200.00
+        }
+      ],
+      "followers": [
+        {
+          "id": 7,
+          "userName": "Olivia White"
+        },
+        {
+          "id": 8,
+          "userName": "Liam Black"
+        }
+      ],
+      "followed": [
+        {
+          "id": 9,
+          "userName": "Ava baker"
+        },
+        {
+          "id": 6,
+          "userName": "Emma Green"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "userName": "Sophia Taylor",
+      "posts": [
+        {
+          "id": 112,
+          "userId": 11,
+          "date": "2024-01-05T08:00:00Z",
+          "product": {
+            "id": 212,
+            "name": "Ebook Reader",
+            "type": "Electronics",
+            "brand": "ReadEase",
+            "color": "White",
+            "notes": "Enjoy reading your favorite books with ease."
+          },
+          "category": "Electronics",
+          "price": 80.00
+        }
+      ],
+      "followers": [
+        {
+          "id": 10,
+          "userName": "Noah Miller"
+        },
+        {
+          "id": 12,
+          "userName": "Oliver Cook"
+        }
+      ],
+      "followed": [
+        {
+          "id": 13,
+          "userName": "Scarlett Bell"
+        },
+        {
+          "id": 14,
+          "userName": "Lucas King"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "userName": "Oliver Cook",
+      "posts": [
+        {
+          "id": 113,
+          "userId": 12,
+          "date": "2024-02-15T14:30:00Z",
+          "product": {
+            "id": 213,
+            "name": "Wireless Charger",
+            "type": "Accessories",
+            "brand": "PowerUp",
+            "color": "Black",
+            "notes": "Charge your devices wirelessly with this stylish charger."
+          },
+          "category": "Accessories",
+          "price": 40.00
+        }
+      ],
+      "followers": [
+        {
+          "id": 11,
+          "userName": "Sophia Taylor"
+        },
+        {
+          "id": 13,
+          "userName": "Scarlett Bell"
+        }
+      ],
+      "followed": [
+        {
+          "id": 14,
+          "userName": "Lucas King"
+        },
+        {
+          "id": 15,
+          "userName": "Mia Wright"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "userName": "Scarlett Bell",
+      "posts": [
+        {
+          "id": 114,
+          "userId": 13,
+          "date": "2024-03-20T10:45:00Z",
+          "product": {
+            "id": 214,
+            "name": "Virtual Reality Headset",
+            "type": "Gaming",
+            "brand": "VRMaster",
+            "color": "Black",
+            "notes": "Immerse yourself in virtual worlds with this VR headset."
+          },
+          "category": "Gaming",
+          "price": 150.00
+        }
+      ],
+      "followers": [
+        {
+          "id": 11,
+          "userName": "Sophia Taylor"
+        },
+        {
+          "id": 12,
+          "userName": "Oliver Cook"
+        }
+      ],
+      "followed": [
+        {
+          "id": 14,
+          "userName": "Lucas King"
+        },
+        {
+          "id": 15,
+          "userName": "Mia Wright"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "userName": "Lucas King",
+      "posts": [
+        {
+          "id": 115,
+          "userId": 14,
+          "date": "2024-04-10T09:30:00Z",
+          "product": {
+            "id": 215,
+            "name": "Smart Thermostat",
+            "type": "Smart Home",
+            "brand": "SmartHeat",
+            "color": "White",
+            "notes": "Control your home temperature with this smart thermostat."
+          },
+          "category": "Smart Home",
+          "price": 120.00
+        }
+      ],
+      "followers": [
+        {
+          "id": 12,
+          "userName": "Oliver Cook"
+        },
+        {
+          "id": 13,
+          "userName": "Scarlett Bell"
+        }
+      ],
+      "followed": [
+        {
+          "id": 15,
+          "userName": "Mia Wright"
+        },
+        {
+          "id": 11,
+          "userName": "Sophia Taylor"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "userName": "Mia Wright",
+      "posts": [
+        {
+          "id": 116,
+          "userId": 15,
+          "date": "2024-05-20T14:00:00Z",
+          "product": {
+            "id": 216,
+            "name": "Smartwatch X",
+            "type": "Wearable",
+            "brand": "TechWear",
+            "color": "Gold",
+            "notes": "Stay connected with notifications on this stylish smartwatch."
+          },
+          "category": "Wearable",
+          "price": 200.00
+        }
+      ],
+      "followers": [
+        {
+          "id": 14,
+          "userName": "Lucas King"
+        },
+        {
+          "id": 13,
+          "userName": "Scarlett Bell"
+        }
+      ],
+      "followed": [
+        {
+          "id": 12,
+          "userName": "Oliver Cook"
+        },
+        {
+          "id": 11,
+          "userName": "Sophia Taylor"
+        }
+      ]
+    }
+  ]
+}
