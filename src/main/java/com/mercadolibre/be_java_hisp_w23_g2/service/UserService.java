@@ -21,7 +21,6 @@ public class UserService implements IUserService {
 
     @Override
     public UserFollowersCountDTO getFollowersCountSeller(int userId) {
-        ObjectMapper mapper = new ObjectMapper();
         User user = userRepository.findUserById(userId);
         if (user == null) {
             throw new NotFoundException("User with id = " + userId + " not found");
@@ -40,5 +39,18 @@ public class UserService implements IUserService {
         }
 
         return userDTOS;
+    }
+
+    @Override
+    public List<UserDTO> getFollowersUser(int userId) {
+        ObjectMapper mapper = new ObjectMapper();
+        User user = userRepository.findUserById(userId);
+        if (user == null) {
+            throw new NotFoundException("User with id = " + userId + " not found");
+        }
+        if (user.getFollowers().isEmpty()) {
+            throw new NotFoundException("User with id = " + userId + " has no followers");
+        }
+        return user.getFollowers().stream().map(follower -> mapper.convertValue(follower, UserDTO.class)).toList();
     }
 }

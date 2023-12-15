@@ -23,6 +23,11 @@ public class UserController {
         return ResponseEntity.ok(userService.getFollowersCountSeller(userId));
     }
 
+    @GetMapping("/{userId}/followers/list")
+    public ResponseEntity<?> getFollowersUser(@PathVariable int userId) {
+        return ResponseEntity.ok(userService.getFollowersUser(userId));
+    }
+
     @GetMapping("/all")
     public ResponseEntity<?> getAll() {
         return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
