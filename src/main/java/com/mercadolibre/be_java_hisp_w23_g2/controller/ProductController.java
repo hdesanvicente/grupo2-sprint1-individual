@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/products")
 public class ProductController {
     private final IProductService productService;
+    private final IUserService userService;
 
-    public ProductController(IProductService productService) {
+    public ProductController(IProductService productService, IUserService userService) {
         this.productService = productService;
+        this.userService = userService;
     }
 
     @PostMapping("/post")

@@ -6,7 +6,7 @@
       {
         "post_id": 101,
         "user_id": 1,
-        "date": "2023-01-15T08:30:00Z",
+        "date": "15-01-2023",
         "product": {
           "product_id": 201,
           "product_name": "Laptop Pro",
@@ -21,7 +21,7 @@
       {
         "post_id": 102,
         "user_id": 1,
-        "date": "2023-02-20T14:45:00Z",
+        "date": "20-02-2023",
         "product": {
           "product_id": 202,
           "product_name": "Smartphone X",
@@ -62,7 +62,7 @@
       {
         "post_id": 103,
         "user_id": 2,
-        "date": "2023-03-05T11:15:00Z",
+        "date": "05-03-2023",
         "product": {
           "product_id": 203,
           "product_name": "Camera Pro",
@@ -103,7 +103,7 @@
       {
         "post_id": 104,
         "user_id": 3,
-        "date": "2023-04-10T09:30:00Z",
+        "date": "10-04-2023",
         "product": {
           "product_id": 204,
           "product_name": "Gaming Console",
@@ -144,7 +144,7 @@
       {
         "post_id": 105,
         "user_id": 4,
-        "date": "2023-12-16T14:00:00Z",
+        "date": "16-12-2023",
         "product": {
           "product_id": 205,
           "product_name": "Smart Watch",
@@ -189,7 +189,7 @@
       {
         "post_id": 106,
         "user_id": 5,
-        "date": "2023-12-17T16:45:00Z",
+        "date": "17-12-2023",
         "product": {
           "product_id": 206,
           "product_name": "Wireless Earbuds",
@@ -230,7 +230,7 @@
       {
         "post_id": 107,
         "user_id": 6,
-        "date": "2023-07-15T09:30:00Z",
+        "date": "15-07-2023",
         "product": {
           "product_id": 207,
           "product_name": "Digital Camera",
@@ -271,7 +271,7 @@
       {
         "post_id": 108,
         "user_id": 7,
-        "date": "2023-08-05T14:45:00Z",
+        "date": "05-08-2023",
         "product": {
           "product_id": 208,
           "product_name": "Fitness Tracker",
@@ -312,7 +312,7 @@
       {
         "post_id": 109,
         "user_id": 8,
-        "date": "2023-09-10T11:30:00Z",
+        "date": "10-09-2023",
         "product": {
           "product_id": 209,
           "product_name": "Gaming Mouse",
@@ -353,7 +353,7 @@
       {
         "post_id": 110,
         "user_id": 9,
-        "date": "2023-10-20T16:00:00Z",
+        "date": "20-10-2023",
         "product": {
           "product_id": 210,
           "product_name": "Wireless Headphones",
@@ -394,7 +394,7 @@
       {
         "post_id": 111,
         "user_id": 10,
-        "date": "2023-11-30T19:15:00Z",
+        "date": "30-11-2023",
         "product": {
           "product_id": 211,
           "product_name": "Smart Home Hub",
@@ -431,7 +431,7 @@
       {
         "post_id": 112,
         "user_id": 11,
-        "date": "2024-01-05T08:00:00Z",
+        "date": "05-01-2011",
         "product": {
           "product_id": 212,
           "product_name": "Ebook Reader",
@@ -472,7 +472,7 @@
       {
         "post_id": 113,
         "user_id": 12,
-        "date": "2024-02-15T14:30:00Z",
+        "date": "15-02-2021",
         "product": {
           "product_id": 213,
           "product_name": "Wireless Charger",
@@ -513,7 +513,7 @@
       {
         "post_id": 114,
         "user_id": 13,
-        "date": "2024-03-20T10:45:00Z",
+        "date": "20-03-2023",
         "product": {
           "product_id": 214,
           "product_name": "Virtual Reality Headset",
@@ -550,7 +550,7 @@
       {
         "post_id": 115,
         "user_id": 14,
-        "date": "2024-04-10T09:30:00Z",
+        "date": "10-04-2020",
         "product": {
           "product_id": 215,
           "product_name": "Smart Thermostat",
@@ -587,7 +587,7 @@
       {
         "post_id": 116,
         "user_id": 15,
-        "date": "2024-05-20T14:00:00Z",
+        "date": "20-05-2022",
         "product": {
           "product_id": 216,
           "product_name": "Smartwatch X",

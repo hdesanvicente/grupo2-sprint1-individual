@@ -1,5 +1,6 @@
 package com.mercadolibre.be_java_hisp_w23_g2.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -23,6 +24,7 @@ public class PostDTO {
     private int id;
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern="dd-MM-yyyy")
     private LocalDate date;
     private ProductDTO product;
     private String category;
