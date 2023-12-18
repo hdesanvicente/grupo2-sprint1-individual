@@ -25,7 +25,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getFollowersUser(userId));
     }
 
-    @PostMapping("/users/{userId}/unfollow/{userIdToUnfollow}")
+    @PostMapping("/{userId}/unfollow/{userIdToUnfollow}")
     public ResponseEntity<?> unfollowUser(@PathVariable int userId, @PathVariable int userIdToUnfollow){
         return ResponseEntity.ok(userService.unfollowUser(userId, userIdToUnfollow));
     }
