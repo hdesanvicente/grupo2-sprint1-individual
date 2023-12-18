@@ -1,16 +1,16 @@
 package com.mercadolibre.be_java_hisp_w23_g2.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mercadolibre.be_java_hisp_w23_g2.dto.UserDTO;
-import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowedDTO;
-import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowersCountDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.*;
+import com.mercadolibre.be_java_hisp_w23_g2.entity.Post;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.User;
 import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFoundException;
 import com.mercadolibre.be_java_hisp_w23_g2.repository.IUserRepository;
-import org.springframework.beans.factory.annotation.Value;
+import com.mercadolibre.be_java_hisp_w23_g2.utils.Mapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -68,5 +68,36 @@ public class UserService implements IUserService {
             throw new NotFoundException("User with id = " + userId + " has no followed");
         }
         return mapper.convertValue(user, UserFollowedDTO.class);
+    }
+
+    @Override
+    public PostFollowedDTO getPostsByFollowedUsers(int userId) {
+        User user = userRepository.findUserById(userId);
+        if (user == null) {
+            throw new NotFoundException("User with id = " + userId + " not found");
+        }
+        if (user.getFollowed() == null || user.getFollowed().isEmpty() ) {
+            throw new NotFoundException("User with id = " + userId + " has no followed");
+        }
+
+        LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
+        List<Post> allPost = new ArrayList<>();
+
+        for (User followedUser : user.getFollowed()){
+            User userf = userRepository.findUserById(followedUser.getId());
+            if (userf == null){
+                throw new NotFoundException("User followed with id = " + followedUser.getId() + " not found");
+            }
+            if (userf.getPosts() == null || userf.getPosts().isEmpty()){
+                throw new NotFoundException("User followed with id = " + followedUser.getId() + " has no post");
+            }
+            for (Post postF : userf.getPosts()){
+                LocalDate postDate = postF.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                if (postDate.isAfter(twoWeeksAgo)){
+                    allPost.add(postF);
+                }
+            }
+        }
+        return Mapper.mapPostFollowedDTO(user.getId(),allPost);
     }
 }
