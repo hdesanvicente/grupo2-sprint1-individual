@@ -13,12 +13,12 @@ public class ExceptionConfig {
     }
 
     @ExceptionHandler
-    public ResponseEntity<?> badRequestException(BadRequestException e){
+    public ResponseEntity<?> badRequestException(BadRequestException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
 
-    @ExceptionHandler(NotFollowingException.class)
+    @ExceptionHandler
     public ResponseEntity<?> NotFollowingException(NotFollowingException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-
     }
 }
