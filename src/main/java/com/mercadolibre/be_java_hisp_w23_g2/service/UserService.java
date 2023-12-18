@@ -64,7 +64,7 @@ public class UserService implements IUserService {
         if (user == null) {
             throw new NotFoundException("User with id = " + userId + " not found");
         }
-        if (user.getFollowed().isEmpty()) {
+        if (user.getFollowed() == null || user.getFollowed().isEmpty() ) {
             throw new NotFoundException("User with id = " + userId + " has no followed");
         }
         return mapper.convertValue(user, UserFollowedDTO.class);
