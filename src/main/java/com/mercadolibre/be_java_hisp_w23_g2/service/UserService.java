@@ -85,15 +85,15 @@ public class UserService implements IUserService {
 
 
         if (user == null){
-            throw new BadRequestException("El usuario "+userId+" no existe");
+            throw new BadRequestException("The user "+userId+" doesn't exist");
         }
 
         if (user2 == null){
-            throw new BadRequestException("El usuario "+userIdToFollow+" no existe");
+            throw new BadRequestException("The user "+userIdToFollow+" doesn't exist");
         }
 
         if (user.getFollowed().contains(userRepository.findUserById(userIdToFollow))) {
-            throw new BadRequestException("El usuario " + userId + " ya sigue a " + userIdToFollow);
+            throw new BadRequestException("The user " + userId + " allready follow " + userIdToFollow);
         }
 
         return Mapper.mapUserFollowedDTO(userRepository.followUser(userId,userIdToFollow));
