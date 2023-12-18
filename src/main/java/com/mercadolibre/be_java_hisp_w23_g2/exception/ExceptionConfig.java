@@ -11,4 +11,9 @@ public class ExceptionConfig {
     public ResponseEntity<?> notFoundException(NotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
+
+    @ExceptionHandler(NotFollowingException.class)
+    public ResponseEntity<?> NotFollowingException(NotFollowingException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
 }

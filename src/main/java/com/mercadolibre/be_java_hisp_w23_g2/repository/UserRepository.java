@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.Post;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.User;
+import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
@@ -33,6 +34,18 @@ public class UserRepository implements IUserRepository {
         List<User> users = null;
         try {
             users = objectMapper.readValue(file, typeRef);
+            for (User user : users) {
+                for (int j = 0; j < user.getFollowers().size(); j++) {
+                    List<User> finalUsers = users;
+                    user.setFollowers(user.getFollowers().stream().map(u -> finalUsers
+                            .stream().filter(u1 -> u.getId() == u1.getId()).findFirst().orElse(null)).toList());
+                }
+                for (int j = 0; j < user.getFollowed().size(); j++) {
+                    List<User> finalUsers = users;
+                    user.setFollowed(user.getFollowed().stream().map(u -> finalUsers
+                            .stream().filter(u1 -> u.getId() == u1.getId()).findFirst().orElse(null)).toList());
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -55,5 +68,10 @@ public class UserRepository implements IUserRepository {
     @Override
     public void addPost(User user, Post post) {
         user.getPosts().add(post);
+
+    public void unfollowUser(User currentUser, User userToUnfollow) {
+        currentUser.getFollowed().remove(userToUnfollow);
+        userToUnfollow.getFollowers().remove(currentUser);
+
     }
 }
