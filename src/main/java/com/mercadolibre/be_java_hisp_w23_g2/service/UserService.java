@@ -3,7 +3,16 @@ package com.mercadolibre.be_java_hisp_w23_g2.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.*;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.Post;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.MessageDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.UserDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowedDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowersCountDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowersDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.User;
+
+import com.mercadolibre.be_java_hisp_w23_g2.exception.BadRequestException;
+
+import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFollowingException;
 import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFoundException;
 import com.mercadolibre.be_java_hisp_w23_g2.repository.IUserRepository;
 import com.mercadolibre.be_java_hisp_w23_g2.utils.Mapper;
@@ -12,7 +21,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService implements IUserService {
@@ -25,49 +33,92 @@ public class UserService implements IUserService {
     @Override
     public UserFollowersCountDTO getFollowersCountSeller(int userId) {
         User user = userRepository.findUserById(userId);
-        if (user == null) {
-            throw new NotFoundException("User with id = " + userId + " not found");
-        }
-        return new UserFollowersCountDTO(user.getId(), user.getUserName(), user.getFollowers().size());
+        validateUserExistence(user, userId, "Current");
+
+        return Mapper.mapUserFollowersCountDTO(user);
     }
 
     public List<UserDTO> getAll() {
-        ObjectMapper objectMapper = new ObjectMapper();
         List<User> users = userRepository.getAll();
-        List<UserDTO> userDTOS = new ArrayList<>();
 
-        for (User aux : users
-        ) {
-            userDTOS.add(objectMapper.convertValue(aux, UserDTO.class));
-        }
-
-        return userDTOS;
+        return users.stream().map(Mapper::mapUserDTO).toList();
     }
 
     @Override
-    public List<UserDTO> getFollowersUser(int userId) {
-        ObjectMapper mapper = new ObjectMapper();
+    public UserFollowersDTO getFollowersUser(int userId) {
         User user = userRepository.findUserById(userId);
-        if (user == null) {
-            throw new NotFoundException("User with id = " + userId + " not found");
-        }
-        if (user.getFollowers().isEmpty()) {
+        validateUserExistence(user, userId, "Current");
+
+        if (user.getFollowers() == null || user.getFollowers().isEmpty()) {
             throw new NotFoundException("User with id = " + userId + " has no followers");
         }
-        return user.getFollowers().stream().map(follower -> mapper.convertValue(follower, UserDTO.class)).toList();
+        return Mapper.mapUserFollowersDTO(user);
+
     }
 
     @Override
     public UserFollowedDTO getFollowedUser(int userId) {
-        ObjectMapper mapper = new ObjectMapper();
         User user = userRepository.findUserById(userId);
-        if (user == null) {
-            throw new NotFoundException("User with id = " + userId + " not found");
-        }
+        validateUserExistence(user, userId, "Current");
+
         if (user.getFollowed() == null || user.getFollowed().isEmpty() ) {
             throw new NotFoundException("User with id = " + userId + " has no followed");
         }
-        return mapper.convertValue(user, UserFollowedDTO.class);
+        return Mapper.mapUserFollowedDTO(user);
+    }
+
+    @Override
+    public MessageDTO unfollowUser(int userId, int userIdToUnfollow) {
+        User currentUser = userRepository.findUserById(userId);
+        validateUserExistence(currentUser, userId, "Current");
+
+        User userToUnfollow = userRepository.findUserById(userIdToUnfollow);
+        validateUserExistence(userToUnfollow, userIdToUnfollow, "To unfollow");
+
+        validateFollowing(currentUser, userIdToUnfollow);
+
+        userRepository.unfollowUser(currentUser, userToUnfollow);
+
+        return new MessageDTO("Has stopped following " + userToUnfollow.getUserName());
+    }
+
+    private void validateUserExistence(User user, int userId, String userType) {
+        if (user == null) {
+            throw new NotFoundException(String.format("%s user with id = %d not exists.", userType, userId));
+        }
+    }
+
+    private void validateFollowing(User currentUser, int userIdToUnfollow) {
+        if (currentUser.getFollowed() == null ||
+                currentUser.getFollowed().stream().filter(user -> user.getId() == userIdToUnfollow).findFirst().orElse(null) == null) {
+            throw new NotFollowingException("The current user does not follow the user to unfollow.");
+        }
+    }
+
+    @Override
+    public UserFollowedDTO followUser(int userId, int userIdToFollow) {
+        if (userId == userIdToFollow){
+            throw new BadRequestException("A user cannot follow himself");
+        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        User user = userRepository.findUserById(userId);
+        User user2 = userRepository.findUserById(userIdToFollow);
+
+
+        if (user == null){
+            throw new BadRequestException("The user "+userId+" doesn't exist");
+        }
+
+        if (user2 == null){
+            throw new BadRequestException("The user "+userIdToFollow+" doesn't exist");
+        }
+
+        if (user.getFollowed().contains(userRepository.findUserById(userIdToFollow))) {
+            throw new BadRequestException("The user " + userId + " allready follow " + userIdToFollow);
+        }
+
+        return Mapper.mapUserFollowedDTO(userRepository.followUser(userId,userIdToFollow));
     }
 
     @Override
