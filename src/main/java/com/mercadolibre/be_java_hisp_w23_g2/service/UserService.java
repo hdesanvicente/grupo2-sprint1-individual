@@ -8,6 +8,7 @@ import com.mercadolibre.be_java_hisp_w23_g2.entity.User;
 import com.mercadolibre.be_java_hisp_w23_g2.exception.BadRequestException;
 import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFoundException;
 import com.mercadolibre.be_java_hisp_w23_g2.repository.IUserRepository;
+import com.mercadolibre.be_java_hisp_w23_g2.utils.Mapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -58,13 +59,27 @@ public class UserService implements IUserService {
 
     @Override
     public UserFollowersDTO followUser(int userId, int userIdToFollow) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        Object user = userRepository.followUser(userId,userIdToFollow);
-
-        if (user instanceof String){
-            throw new BadRequestException(user.toString());
+        if (userId == userIdToFollow){
+            throw new BadRequestException("Un usuario no se puede seguir a si mismo");
         }
 
-        return objectMapper.convertValue(user,UserFollowersDTO.class);
+        ObjectMapper objectMapper = new ObjectMapper();
+        User user = userRepository.findUserById(userId);
+        User user2 = userRepository.findUserById(userIdToFollow);
+
+
+        if (user == null){
+            throw new BadRequestException("El usuario "+userId+" no existe");
+        }
+
+        if (user2 == null){
+            throw new BadRequestException("El usuario "+userIdToFollow+" no existe");
+        }
+
+        if (user.getFollowed().contains(userRepository.findUserById(userIdToFollow))) {
+            throw new BadRequestException("El usuario " + userId + " ya sigue a " + userIdToFollow);
+        }
+
+        return Mapper.mapToUserFollowersDTO(userRepository.followUser(userId,userIdToFollow));
     }
 }

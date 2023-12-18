@@ -52,31 +52,11 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public <T> T followUser(int userId, int userIdToFollow) {
+    public User followUser(int userId, int userIdToFollow) {
         User user = findUserById(userId);
-        String text;
-
-        if (userId == userIdToFollow){
-            text = "Un usuario no se puede seguir a si mismo";
-            return (T) text;
-        }
-
-        if (findUserById(userId) == null){
-            text = "No existe el usuario con id "+userId;
-            return (T) text;
-        }
-
-        if (findUserById(userIdToFollow) == null){
-            text = "No existe el usuario con id "+userIdToFollow;
-            return (T) text;
-        }
-
-        if (user.getFollowed().contains(findUserById(userIdToFollow))) {
-            text = "El usuario "+userId+" ya sigue a "+userIdToFollow;
-            return (T) text;}
 
         user.getFollowed().add(findUserById(userIdToFollow));
-        return (T) user;
+        return user;
 
     }
 }

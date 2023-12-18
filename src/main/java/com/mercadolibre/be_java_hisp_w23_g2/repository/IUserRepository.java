@@ -10,5 +10,5 @@ public interface IUserRepository {
 
     List<User> getAll();
 
-    <T> T followUser(int userId, int userIdToFollow);
+    User followUser(int userId, int userIdToFollow);
 }
