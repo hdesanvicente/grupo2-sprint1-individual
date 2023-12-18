@@ -20,7 +20,7 @@ public class ProductService implements IProductService {
 
     @Override
     public MessageDTO addPost(PostDTO postDTO) {
-        // Verifico que hayan enviado todos los parámetros
+        // Check that all parameters have been sent
         if (postDTO.getUserId() == 0 || postDTO.getDate() == null ||
             postDTO.getProduct().getId() == 0 || postDTO.getProduct().getName() == null ||
             postDTO.getProduct().getType() == null || postDTO.getProduct().getBrand() == null ||
@@ -32,13 +32,13 @@ public class ProductService implements IProductService {
         ObjectMapper mapper = new ObjectMapper();
         Post post = mapper.convertValue(postDTO, Post.class);
 
-        // Verifico que exista el usuario al que se le agrega el post
+        // Check that the user exists
         User user = userRepository.findUserById(post.getUserId());
         if (user == null) {
             throw new BadRequestException("The user does not exist.");
         }
 
-        // Verifico que no exista un producto con ese id
+        // Check that there is no product with this id
         List<Post> postsUser = user.getPosts();
         Optional<Post> postExist = postsUser.stream()
                                     .filter(p -> p.getProduct().getId() == post.getProduct().getId()).findFirst();
@@ -46,7 +46,7 @@ public class ProductService implements IProductService {
             throw new BadRequestException("The product id already exists.");
         }
 
-        // En caso de pasar las validaciones, agrego el post a la lista
+        // In case of passing the validations, I add the post to the list
         userRepository.addPost(user, post);
 
         return new MessageDTO("Publication successfully added.");
