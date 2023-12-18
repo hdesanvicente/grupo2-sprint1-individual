@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowedDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowersCountDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowersDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.User;
 import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFoundException;
 import com.mercadolibre.be_java_hisp_w23_g2.repository.IUserRepository;
@@ -45,16 +46,16 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<UserDTO> getFollowersUser(int userId) {
+    public UserFollowersDTO getFollowersUser(int userId) {
         ObjectMapper mapper = new ObjectMapper();
         User user = userRepository.findUserById(userId);
         if (user == null) {
             throw new NotFoundException("User with id = " + userId + " not found");
         }
-        if (user.getFollowers().isEmpty()) {
+        if (user.getFollowers() == null || user.getFollowers().isEmpty()) {
             throw new NotFoundException("User with id = " + userId + " has no followers");
         }
-        return user.getFollowers().stream().map(follower -> mapper.convertValue(follower, UserDTO.class)).toList();
+        return mapper.convertValue(user, UserFollowersDTO.class);
     }
 
     @Override
