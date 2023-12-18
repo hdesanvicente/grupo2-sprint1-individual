@@ -61,6 +61,7 @@ public class UserRepository implements IUserRepository {
                 .orElse(null);
     }
 
+    @Override
     public List<User> getAll() {
         return users;
     }
@@ -68,7 +69,17 @@ public class UserRepository implements IUserRepository {
     @Override
     public void addPost(User user, Post post) {
         user.getPosts().add(post);
+    }
 
+    @Override
+    public User followUser(int userId, int userIdToFollow) {
+        User user = findUserById(userId);
+
+        user.getFollowed().add(findUserById(userIdToFollow));
+        return user;
+    }
+
+    @Override
     public void unfollowUser(User currentUser, User userToUnfollow) {
         currentUser.getFollowed().remove(userToUnfollow);
         userToUnfollow.getFollowers().remove(currentUser);

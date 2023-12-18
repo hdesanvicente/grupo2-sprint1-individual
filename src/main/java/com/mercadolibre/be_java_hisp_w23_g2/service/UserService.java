@@ -7,10 +7,14 @@ import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowedDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowersCountDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowersDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.User;
+
+import com.mercadolibre.be_java_hisp_w23_g2.exception.BadRequestException;
+
 import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFollowingException;
 import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFoundException;
 import com.mercadolibre.be_java_hisp_w23_g2.repository.IUserRepository;
 import com.mercadolibre.be_java_hisp_w23_g2.utils.Mapper;
+
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -96,5 +100,31 @@ public class UserService implements IUserService {
                 currentUser.getFollowed().stream().filter(user -> user.getId() == userIdToUnfollow).findFirst().orElse(null) == null) {
             throw new NotFollowingException("The current user does not follow the user to unfollow.");
         }
+    }
+
+    @Override
+    public UserFollowedDTO followUser(int userId, int userIdToFollow) {
+        if (userId == userIdToFollow){
+            throw new BadRequestException("A user cannot follow himself");
+        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        User user = userRepository.findUserById(userId);
+        User user2 = userRepository.findUserById(userIdToFollow);
+
+
+        if (user == null){
+            throw new BadRequestException("The user "+userId+" doesn't exist");
+        }
+
+        if (user2 == null){
+            throw new BadRequestException("The user "+userIdToFollow+" doesn't exist");
+        }
+
+        if (user.getFollowed().contains(userRepository.findUserById(userIdToFollow))) {
+            throw new BadRequestException("The user " + userId + " allready follow " + userIdToFollow);
+        }
+
+        return Mapper.mapUserFollowedDTO(userRepository.followUser(userId,userIdToFollow));
     }
 }
