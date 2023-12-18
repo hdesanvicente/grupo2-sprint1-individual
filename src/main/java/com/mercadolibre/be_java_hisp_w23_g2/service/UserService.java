@@ -1,9 +1,11 @@
 package com.mercadolibre.be_java_hisp_w23_g2.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.MessageDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowersCountDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.User;
+import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFollowingException;
 import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFoundException;
 import com.mercadolibre.be_java_hisp_w23_g2.repository.IUserRepository;
 import org.springframework.stereotype.Service;
@@ -52,5 +54,30 @@ public class UserService implements IUserService {
             throw new NotFoundException("User with id = " + userId + " has no followers");
         }
         return user.getFollowers().stream().map(follower -> mapper.convertValue(follower, UserDTO.class)).toList();
+    }
+
+    @Override
+    public MessageDTO unfollowUser(int userId, int userIdToUnfollow) {
+        User currentUser = userRepository.findUserById(userId);
+
+        if(currentUser == null){
+            throw new NotFoundException("User with id = " + userId + " not exists.");
+        }
+
+        User userToUnfollow = userRepository.findUserById(userIdToUnfollow);
+
+        if(userToUnfollow == null){
+            throw new NotFoundException("User with id = " + userIdToUnfollow + " not exists.");
+        }
+
+        if (currentUser.getFollowed() == null || currentUser.getFollowed().stream().filter(user -> user.getId() == userIdToUnfollow)
+                .findFirst().orElse(null) == null) {
+            System.out.println(currentUser.getFollowed());
+            throw new NotFollowingException("The current user does not follow " + userToUnfollow.getUserName());
+        }
+
+        userRepository.unfollowUser(currentUser, userToUnfollow);
+
+        return new MessageDTO("Has stopped following " + userToUnfollow.getUserName());
     }
 }

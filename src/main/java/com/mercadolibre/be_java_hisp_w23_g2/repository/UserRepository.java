@@ -3,6 +3,7 @@ package com.mercadolibre.be_java_hisp_w23_g2.repository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.User;
+import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
@@ -49,5 +50,11 @@ public class UserRepository implements IUserRepository {
 
     public List<User> getAll() {
         return users;
+    }
+
+    @Override
+    public void unfollowUser(User currentUser, User userToUnfollow) {
+        currentUser.getFollowed().remove(userToUnfollow);
+        userToUnfollow.getFollowers().remove(currentUser);
     }
 }
