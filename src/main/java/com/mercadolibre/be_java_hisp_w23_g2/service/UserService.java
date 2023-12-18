@@ -105,7 +105,7 @@ public class UserService implements IUserService {
     @Override
     public UserFollowedDTO followUser(int userId, int userIdToFollow) {
         if (userId == userIdToFollow){
-            throw new BadRequestException("Un usuario no se puede seguir a si mismo");
+            throw new BadRequestException("A user cannot follow himself");
         }
 
         ObjectMapper objectMapper = new ObjectMapper();
