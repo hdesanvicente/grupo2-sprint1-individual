@@ -601,12 +601,12 @@
       }
     ],
     "followers": [
-    ],
-    "followed": [
       {
         "user_id": 12,
         "user_name": "Oliver Cook"
-      },
+      }
+    ],
+    "followed": [
       {
         "user_id": 11,
         "user_name": "Sophia Taylor"
