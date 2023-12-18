@@ -3,10 +3,7 @@ package com.mercadolibre.be_java_hisp_w23_g2.controller;
 import com.mercadolibre.be_java_hisp_w23_g2.service.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
@@ -28,9 +25,18 @@ public class UserController {
         return ResponseEntity.ok(userService.getFollowersUser(userId));
     }
 
+    @PostMapping("/users/{userId}/unfollow/{userIdToUnfollow}")
+    public ResponseEntity<?> unfollowUser(@PathVariable int userId, @PathVariable int userIdToUnfollow){
+        return ResponseEntity.ok(userService.unfollowUser(userId, userIdToUnfollow));
+    }
+
     @GetMapping("/{userId}/followed/list")
     public ResponseEntity<?> getFollowedUser(@PathVariable int userId) {
         return ResponseEntity.ok(userService.getFollowedUser(userId));
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<?> getAll() {
+        return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
+    }
 }
