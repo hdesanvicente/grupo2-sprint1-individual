@@ -3,7 +3,9 @@ package com.mercadolibre.be_java_hisp_w23_g2.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowersCountDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowersDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.User;
+import com.mercadolibre.be_java_hisp_w23_g2.exception.BadRequestException;
 import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFoundException;
 import com.mercadolibre.be_java_hisp_w23_g2.repository.IUserRepository;
 import org.springframework.stereotype.Service;
@@ -52,5 +54,17 @@ public class UserService implements IUserService {
             throw new NotFoundException("User with id = " + userId + " has no followers");
         }
         return user.getFollowers().stream().map(follower -> mapper.convertValue(follower, UserDTO.class)).toList();
+    }
+
+    @Override
+    public UserFollowersDTO followUser(int userId, int userIdToFollow) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Object user = userRepository.followUser(userId,userIdToFollow);
+
+        if (user instanceof String){
+            throw new BadRequestException(user.toString());
+        }
+
+        return objectMapper.convertValue(user,UserFollowersDTO.class);
     }
 }
