@@ -1,5 +1,6 @@
 package com.mercadolibre.be_java_hisp_w23_g2.service;
 
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.*;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.Post;
@@ -82,37 +83,17 @@ public class UserService implements IUserService {
         return new MessageDTO("Has stopped following " + userToUnfollow.getUserName());
     }
 
-    private void validateUserExistence(User user, int userId, String userType) {
-        if (user == null) {
-            throw new NotFoundException(String.format("%s user with id = %d not exists.", userType, userId));
-        }
-    }
-
-    private void validateFollowing(User currentUser, int userIdToUnfollow) {
-        if (currentUser.getFollowed() == null ||
-                currentUser.getFollowed().stream().filter(user -> user.getId() == userIdToUnfollow).findFirst().orElse(null) == null) {
-            throw new NotFollowingException("The current user does not follow the user to unfollow.");
-        }
-    }
-
     @Override
     public UserFollowedDTO followUser(int userId, int userIdToFollow) {
         if (userId == userIdToFollow){
             throw new BadRequestException("A user cannot follow himself");
         }
 
-        ObjectMapper objectMapper = new ObjectMapper();
         User user = userRepository.findUserById(userId);
+        validateUserExistence(user, userId, "Current");
+
         User user2 = userRepository.findUserById(userIdToFollow);
-
-
-        if (user == null){
-            throw new BadRequestException("The user "+userId+" doesn't exist");
-        }
-
-        if (user2 == null){
-            throw new BadRequestException("The user "+userIdToFollow+" doesn't exist");
-        }
+        validateUserExistence(user2, userIdToFollow, "To Follow");
 
         if (user.getFollowed().contains(userRepository.findUserById(userIdToFollow))) {
             throw new BadRequestException("The user " + userId + " allready follow " + userIdToFollow);
@@ -150,5 +131,18 @@ public class UserService implements IUserService {
             }
         }
         return Mapper.mapPostFollowedDTO(user.getId(),allPost);
+
+    private void validateUserExistence(User user, int userId, String userType) {
+        if (user == null) {
+            throw new NotFoundException(String.format("%s user with id = %d not exists.", userType, userId));
+        }
+    }
+
+    private void validateFollowing(User currentUser, int userIdToUnfollow) {
+        if (currentUser.getFollowed() == null ||
+                currentUser.getFollowed().stream().filter(user -> user.getId() == userIdToUnfollow).findFirst().orElse(null) == null) {
+            throw new NotFollowingException("The current user does not follow the user to unfollow.");
+        }
+
     }
 }

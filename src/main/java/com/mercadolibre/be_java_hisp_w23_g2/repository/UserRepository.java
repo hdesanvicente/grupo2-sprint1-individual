@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.Post;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.User;
-import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
@@ -12,6 +11,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class UserRepository implements IUserRepository {
@@ -19,37 +19,6 @@ public class UserRepository implements IUserRepository {
 
     public UserRepository() throws IOException {
         users = loadData();
-    }
-
-    public List<User> loadData() throws IOException {
-        File file = null;
-        try {
-            file = ResourceUtils.getFile("classpath:users.json");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        ObjectMapper objectMapper = new ObjectMapper();
-        TypeReference<List<User>> typeRef = new TypeReference<>() {
-        };
-        List<User> users = null;
-        try {
-            users = objectMapper.readValue(file, typeRef);
-            for (User user : users) {
-                for (int j = 0; j < user.getFollowers().size(); j++) {
-                    List<User> finalUsers = users;
-                    user.setFollowers(user.getFollowers().stream().map(u -> finalUsers
-                            .stream().filter(u1 -> u.getId() == u1.getId()).findFirst().orElse(null)).toList());
-                }
-                for (int j = 0; j < user.getFollowed().size(); j++) {
-                    List<User> finalUsers = users;
-                    user.setFollowed(user.getFollowed().stream().map(u -> finalUsers
-                            .stream().filter(u1 -> u.getId() == u1.getId()).findFirst().orElse(null)).toList());
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return users;
     }
 
     @Override
@@ -84,5 +53,37 @@ public class UserRepository implements IUserRepository {
         currentUser.getFollowed().remove(userToUnfollow);
         userToUnfollow.getFollowers().remove(currentUser);
 
+    }
+
+    public List<User> loadData() throws IOException {
+        File file = null;
+        try {
+            file = ResourceUtils.getFile("classpath:users.json");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        TypeReference<List<User>> typeRef = new TypeReference<>() {
+        };
+        List<User> users = null;
+        try {
+            users = objectMapper.readValue(file, typeRef);
+            //JSON data is being mapped so that repeated users are nor created
+            for (User user : users) {
+                for (int j = 0; j < user.getFollowers().size(); j++) {
+                    List<User> finalUsers = List.copyOf(users);
+                    user.setFollowers(user.getFollowers().stream().map(u -> finalUsers
+                            .stream().filter(u1 -> u.getId() == u1.getId()).findFirst().orElse(null)).collect(Collectors.toList()));
+                }
+                for (int j = 0; j < user.getFollowed().size(); j++) {
+                    List<User> finalUsers = List.copyOf(users);
+                    user.setFollowed(user.getFollowed().stream().map(u -> finalUsers
+                            .stream().filter(u1 -> u.getId() == u1.getId()).findFirst().orElse(null)).collect(Collectors.toList()));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return users;
     }
 }
