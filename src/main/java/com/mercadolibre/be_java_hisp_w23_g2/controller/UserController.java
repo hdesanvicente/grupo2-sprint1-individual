@@ -25,11 +25,15 @@ public class UserController {
         return ResponseEntity.ok(userService.getFollowersUser(userId));
     }
 
+    @PostMapping("/users/{userId}/unfollow/{userIdToUnfollow}")
+    public ResponseEntity<?> unfollowUser(@PathVariable int userId, @PathVariable int userIdToUnfollow){
+        return ResponseEntity.ok(userService.unfollowUser(userId, userIdToUnfollow));
+    }
+
     @GetMapping("/{userId}/followed/list")
     public ResponseEntity<?> getFollowedUser(@PathVariable int userId) {
         return ResponseEntity.ok(userService.getFollowedUser(userId));
     }
-
 
     @GetMapping("/all")
     public ResponseEntity<?> getAll() {
