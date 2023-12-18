@@ -1,6 +1,7 @@
 package com.mercadolibre.be_java_hisp_w23_g2.service;
 
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowedDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowersCountDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowersDTO;
 
@@ -13,5 +14,5 @@ public interface IUserService {
 
     List<UserDTO> getFollowersUser(int userId);
 
-    UserFollowersDTO followUser(int userId, int userIdToFollow);
+    UserFollowedDTO followUser(int userId, int userIdToFollow);
 }

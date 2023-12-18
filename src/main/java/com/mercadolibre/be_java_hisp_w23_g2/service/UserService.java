@@ -2,6 +2,7 @@ package com.mercadolibre.be_java_hisp_w23_g2.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowedDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowersCountDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowersDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.User;
@@ -58,7 +59,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserFollowersDTO followUser(int userId, int userIdToFollow) {
+    public UserFollowedDTO followUser(int userId, int userIdToFollow) {
         if (userId == userIdToFollow){
             throw new BadRequestException("Un usuario no se puede seguir a si mismo");
         }
@@ -80,6 +81,6 @@ public class UserService implements IUserService {
             throw new BadRequestException("El usuario " + userId + " ya sigue a " + userIdToFollow);
         }
 
-        return Mapper.mapToUserFollowersDTO(userRepository.followUser(userId,userIdToFollow));
+        return Mapper.mapUserFollowedDTO(userRepository.followUser(userId,userIdToFollow));
     }
 }
