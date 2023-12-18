@@ -65,6 +65,12 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
+    public User followUser(int userId, int userIdToFollow) {
+        User user = findUserById(userId);
+
+        user.getFollowed().add(findUserById(userIdToFollow));
+        return user;
+
     public void unfollowUser(User currentUser, User userToUnfollow) {
         currentUser.getFollowed().remove(userToUnfollow);
         userToUnfollow.getFollowers().remove(currentUser);
