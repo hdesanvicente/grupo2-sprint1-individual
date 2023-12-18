@@ -2,21 +2,20 @@ package com.mercadolibre.be_java_hisp_w23_g2.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.mercadolibre.be_java_hisp_w23_g2.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonPropertyOrder({"product_id","product_name","type","brand","color","notes"})
-public class ProductDTO {
-    @JsonProperty("product_id")
+@JsonPropertyOrder({"user_id", "posts"})
+public class PostFollowedDTO {
+    @JsonProperty("user_id")
     private int id;
-    @JsonProperty("product_name")
-    private String name;
-    private String type;
-    private String brand;
-    private String color;
-    private String notes;
+    private List<PostDTO> posts;
 }

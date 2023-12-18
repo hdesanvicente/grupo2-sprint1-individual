@@ -1,5 +1,6 @@
 package com.mercadolibre.be_java_hisp_w23_g2.service;
 
+import com.mercadolibre.be_java_hisp_w23_g2.dto.PostFollowedDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.MessageDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowedDTO;
@@ -15,5 +16,7 @@ public interface IUserService {
     List<UserDTO> getAll();
     UserFollowedDTO followUser(int userId, int userIdToFollow);
     MessageDTO unfollowUser(int userId, int userIdToUnfollow);
-
+    List<UserDTO> getFollowersUser(int userId);
+    UserFollowedDTO getFollowedUser(int userId);
+    PostFollowedDTO getPostsByFollowedUsers(int userId);
 }
