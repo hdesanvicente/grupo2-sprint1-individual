@@ -1,6 +1,5 @@
 package com.mercadolibre.be_java_hisp_w23_g2.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.MessageDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowedDTO;
@@ -79,6 +78,25 @@ public class UserService implements IUserService {
         return new MessageDTO("Has stopped following " + userToUnfollow.getUserName());
     }
 
+    @Override
+    public UserFollowedDTO followUser(int userId, int userIdToFollow) {
+        if (userId == userIdToFollow){
+            throw new BadRequestException("A user cannot follow himself");
+        }
+
+        User user = userRepository.findUserById(userId);
+        validateUserExistence(user, userId, "Current");
+
+        User user2 = userRepository.findUserById(userIdToFollow);
+        validateUserExistence(user2, userIdToFollow, "To Follow");
+
+        if (user.getFollowed().contains(userRepository.findUserById(userIdToFollow))) {
+            throw new BadRequestException("The user " + userId + " allready follow " + userIdToFollow);
+        }
+
+        return Mapper.mapUserFollowedDTO(userRepository.followUser(userId,userIdToFollow));
+    }
+
     private void validateUserExistence(User user, int userId, String userType) {
         if (user == null) {
             throw new NotFoundException(String.format("%s user with id = %d not exists.", userType, userId));
@@ -90,31 +108,5 @@ public class UserService implements IUserService {
                 currentUser.getFollowed().stream().filter(user -> user.getId() == userIdToUnfollow).findFirst().orElse(null) == null) {
             throw new NotFollowingException("The current user does not follow the user to unfollow.");
         }
-    }
-
-    @Override
-    public UserFollowedDTO followUser(int userId, int userIdToFollow) {
-        if (userId == userIdToFollow){
-            throw new BadRequestException("A user cannot follow himself");
-        }
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        User user = userRepository.findUserById(userId);
-        User user2 = userRepository.findUserById(userIdToFollow);
-
-
-        if (user == null){
-            throw new BadRequestException("The user "+userId+" doesn't exist");
-        }
-
-        if (user2 == null){
-            throw new BadRequestException("The user "+userIdToFollow+" doesn't exist");
-        }
-
-        if (user.getFollowed().contains(userRepository.findUserById(userIdToFollow))) {
-            throw new BadRequestException("The user " + userId + " allready follow " + userIdToFollow);
-        }
-
-        return Mapper.mapUserFollowedDTO(userRepository.followUser(userId,userIdToFollow));
     }
 }
