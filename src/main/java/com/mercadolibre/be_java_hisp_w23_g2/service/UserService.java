@@ -49,10 +49,11 @@ public class UserService implements IUserService {
         if (user == null) {
             throw new NotFoundException("User with id = " + userId + " not found");
         }
-        if (user.getFollowers().isEmpty()) {
+        if (user.getFollowers() == null || user.getFollowers().isEmpty()) {
             throw new NotFoundException("User with id = " + userId + " has no followers");
         }
         return Mapper.mapUserFollowersDTO(user);
+
     }
 
     @Override
