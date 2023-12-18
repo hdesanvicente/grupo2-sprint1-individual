@@ -33,9 +33,4 @@ public class UserController {
         return ResponseEntity.ok(userService.getFollowedUser(userId));
     }
 
-
-    @GetMapping("/all")
-    public ResponseEntity<?> getAll() {
-        return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
-    }
 }

@@ -12,7 +12,5 @@ public interface IUserService {
 
     UserFollowersDTO getFollowersUser(int userId);
 
-    UserFollowersDTO getFollowersUser(int userId);
-
     UserFollowedDTO getFollowedUser(int userId);
 }
