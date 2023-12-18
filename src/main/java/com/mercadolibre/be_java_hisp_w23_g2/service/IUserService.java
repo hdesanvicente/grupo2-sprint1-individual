@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface IUserService {
     UserFollowersCountDTO getFollowersCountSeller(int userId);
-  
+    UserFollowedDTO getFollowedUser(int userId);
+    UserFollowersDTO getFollowersUser(int userId);
     List<UserDTO> getAll();
-
 
     UserFollowedDTO followUser(int userId, int userIdToFollow);
 
@@ -23,4 +23,6 @@ public interface IUserService {
 
     UserFollowedDTO getFollowedUser(int userId);
 
+
+    MessageDTO unfollowUser(int userId, int userIdToUnfollow);
 }
