@@ -1,7 +1,5 @@
 package com.mercadolibre.be_java_hisp_w23_g2.service;
 
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.*;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.Post;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.MessageDTO;
@@ -20,7 +18,6 @@ import com.mercadolibre.be_java_hisp_w23_g2.utils.Mapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -108,29 +105,29 @@ public class UserService implements IUserService {
         if (user == null) {
             throw new NotFoundException("User with id = " + userId + " not found");
         }
-        if (user.getFollowed() == null || user.getFollowed().isEmpty() ) {
+        if (user.getFollowed() == null || user.getFollowed().isEmpty()) {
             throw new NotFoundException("User with id = " + userId + " has no followed");
         }
 
         LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
         List<Post> allPost = new ArrayList<>();
 
-        for (User followedUser : user.getFollowed()){
+        for (User followedUser : user.getFollowed()) {
             User userf = userRepository.findUserById(followedUser.getId());
-            if (userf == null){
+            if (userf == null) {
                 throw new NotFoundException("User followed with id = " + followedUser.getId() + " not found");
             }
-            if (userf.getPosts() == null || userf.getPosts().isEmpty()){
+            if (userf.getPosts() == null || userf.getPosts().isEmpty()) {
                 throw new NotFoundException("User followed with id = " + followedUser.getId() + " has no post");
             }
-            for (Post postF : userf.getPosts()){
-                LocalDate postDate = postF.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                if (postDate.isAfter(twoWeeksAgo)){
+            for (Post postF : userf.getPosts()) {
+                if (postF.getDate().isAfter(twoWeeksAgo)) {
                     allPost.add(postF);
                 }
             }
         }
-        return Mapper.mapPostFollowedDTO(user.getId(),allPost);
+        return Mapper.mapPostFollowedDTO(user.getId(), allPost);
+    }
 
     private void validateUserExistence(User user, int userId, String userType) {
         if (user == null) {

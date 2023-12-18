@@ -1,5 +1,6 @@
 package com.mercadolibre.be_java_hisp_w23_g2.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -21,6 +22,7 @@ public class Post {
     private int userId;
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern="dd-MM-yyyy")
     private LocalDate date;
     private Product product;
     private String category;
