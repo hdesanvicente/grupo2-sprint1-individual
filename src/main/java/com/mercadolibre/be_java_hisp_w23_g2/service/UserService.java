@@ -26,9 +26,8 @@ public class UserService implements IUserService {
     @Override
     public UserFollowersCountDTO getFollowersCountSeller(int userId) {
         User user = userRepository.findUserById(userId);
-        if (user == null) {
-            throw new NotFoundException("User with id = " + userId + " not found");
-        }
+        validateUserExistence(user, userId, "Current");
+
         return Mapper.mapUserFollowersCountDTO(user);
     }
 
@@ -48,9 +47,8 @@ public class UserService implements IUserService {
     @Override
     public UserFollowersDTO getFollowersUser(int userId) {
         User user = userRepository.findUserById(userId);
-        if (user == null) {
-            throw new NotFoundException("User with id = " + userId + " not found");
-        }
+        validateUserExistence(user, userId, "Current");
+
         if (user.getFollowers() == null || user.getFollowers().isEmpty()) {
             throw new NotFoundException("User with id = " + userId + " has no followers");
         }
@@ -61,9 +59,8 @@ public class UserService implements IUserService {
     @Override
     public UserFollowedDTO getFollowedUser(int userId) {
         User user = userRepository.findUserById(userId);
-        if (user == null) {
-            throw new NotFoundException("User with id = " + userId + " not found");
-        }
+        validateUserExistence(user, userId, "Current");
+
         if (user.getFollowed() == null || user.getFollowed().isEmpty() ) {
             throw new NotFoundException("User with id = " + userId + " has no followed");
         }
