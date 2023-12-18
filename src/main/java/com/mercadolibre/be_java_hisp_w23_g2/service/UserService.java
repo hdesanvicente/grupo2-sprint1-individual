@@ -1,6 +1,5 @@
 package com.mercadolibre.be_java_hisp_w23_g2.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.MessageDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserDTO;
@@ -11,11 +10,10 @@ import com.mercadolibre.be_java_hisp_w23_g2.entity.User;
 import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFollowingException;
 import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFoundException;
 import com.mercadolibre.be_java_hisp_w23_g2.repository.IUserRepository;
-import org.springframework.beans.factory.annotation.Value;
+import com.mercadolibre.be_java_hisp_w23_g2.utils.Mapper;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService implements IUserService {
@@ -31,7 +29,7 @@ public class UserService implements IUserService {
         if (user == null) {
             throw new NotFoundException("User with id = " + userId + " not found");
         }
-        return new UserFollowersCountDTO(user.getId(), user.getUserName(), user.getFollowers().size());
+        return Mapper.mapUserFollowersCountDTO(user);
     }
 
     public List<UserDTO> getAll() {
@@ -49,7 +47,6 @@ public class UserService implements IUserService {
 
     @Override
     public UserFollowersDTO getFollowersUser(int userId) {
-        ObjectMapper mapper = new ObjectMapper();
         User user = userRepository.findUserById(userId);
         if (user == null) {
             throw new NotFoundException("User with id = " + userId + " not found");
@@ -57,12 +54,12 @@ public class UserService implements IUserService {
         if (user.getFollowers() == null || user.getFollowers().isEmpty()) {
             throw new NotFoundException("User with id = " + userId + " has no followers");
         }
-        return mapper.convertValue(user, UserFollowersDTO.class);
+        return Mapper.mapUserFollowersDTO(user);
+
     }
 
     @Override
     public UserFollowedDTO getFollowedUser(int userId) {
-        ObjectMapper mapper = new ObjectMapper();
         User user = userRepository.findUserById(userId);
         if (user == null) {
             throw new NotFoundException("User with id = " + userId + " not found");
@@ -70,7 +67,7 @@ public class UserService implements IUserService {
         if (user.getFollowed() == null || user.getFollowed().isEmpty() ) {
             throw new NotFoundException("User with id = " + userId + " has no followed");
         }
-        return mapper.convertValue(user, UserFollowedDTO.class);
+        return Mapper.mapUserFollowedDTO(user);
     }
 
     @Override

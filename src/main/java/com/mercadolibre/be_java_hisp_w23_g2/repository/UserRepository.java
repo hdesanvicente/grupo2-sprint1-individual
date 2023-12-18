@@ -33,6 +33,18 @@ public class UserRepository implements IUserRepository {
         List<User> users = null;
         try {
             users = objectMapper.readValue(file, typeRef);
+            for (User user : users) {
+                for (int j = 0; j < user.getFollowers().size(); j++) {
+                    List<User> finalUsers = users;
+                    user.setFollowers(user.getFollowers().stream().map(u -> finalUsers
+                            .stream().filter(u1 -> u.getId() == u1.getId()).findFirst().orElse(null)).toList());
+                }
+                for (int j = 0; j < user.getFollowed().size(); j++) {
+                    List<User> finalUsers = users;
+                    user.setFollowed(user.getFollowed().stream().map(u -> finalUsers
+                            .stream().filter(u1 -> u.getId() == u1.getId()).findFirst().orElse(null)).toList());
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
