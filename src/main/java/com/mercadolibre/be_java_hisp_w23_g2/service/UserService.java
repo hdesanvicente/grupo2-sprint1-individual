@@ -36,16 +36,9 @@ public class UserService implements IUserService {
     }
 
     public List<UserDTO> getAll() {
-        ObjectMapper objectMapper = new ObjectMapper();
         List<User> users = userRepository.getAll();
-        List<UserDTO> userDTOS = new ArrayList<>();
 
-        for (User aux : users
-        ) {
-            userDTOS.add(objectMapper.convertValue(aux, UserDTO.class));
-        }
-
-        return userDTOS;
+        return users.stream().map(Mapper::mapUserDTO).toList();
     }
 
     @Override

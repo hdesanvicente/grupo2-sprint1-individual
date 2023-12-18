@@ -19,7 +19,6 @@ public class Mapper {
                                     user.getFollowers().stream().map(Mapper::mapUserDTO).toList());
     }
 
-
     public static UserFollowersCountDTO mapUserFollowersCountDTO(User user) {
         return new UserFollowersCountDTO(user.getId(), user.getUserName(), user.getFollowers().size());
     }
