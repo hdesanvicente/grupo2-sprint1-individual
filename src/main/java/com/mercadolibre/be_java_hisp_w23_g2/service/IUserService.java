@@ -14,12 +14,10 @@ public interface IUserService {
 
     List<UserDTO> getAll();
 
-    List<UserDTO> getFollowersUser(int userId);
-
     MessageDTO unfollowUser(int userId, int userIdToUnfollow);
-  
+
     UserFollowersDTO getFollowersUser(int userId);
-  
+
     UserFollowedDTO getFollowedUser(int userId);
 
 }

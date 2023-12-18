@@ -76,25 +76,28 @@ public class UserService implements IUserService {
     @Override
     public MessageDTO unfollowUser(int userId, int userIdToUnfollow) {
         User currentUser = userRepository.findUserById(userId);
-
-        if(currentUser == null){
-            throw new NotFoundException("User with id = " + userId + " not exists.");
-        }
+        validateUserExistence(currentUser, userId, "Current");
 
         User userToUnfollow = userRepository.findUserById(userIdToUnfollow);
+        validateUserExistence(userToUnfollow, userIdToUnfollow, "To unfollow");
 
-        if(userToUnfollow == null){
-            throw new NotFoundException("User with id = " + userIdToUnfollow + " not exists.");
-        }
-
-        if (currentUser.getFollowed() == null || currentUser.getFollowed().stream().filter(user -> user.getId() == userIdToUnfollow)
-                .findFirst().orElse(null) == null) {
-            System.out.println(currentUser.getFollowed());
-            throw new NotFollowingException("The current user does not follow " + userToUnfollow.getUserName());
-        }
+        validateFollowing(currentUser, userIdToUnfollow);
 
         userRepository.unfollowUser(currentUser, userToUnfollow);
 
         return new MessageDTO("Has stopped following " + userToUnfollow.getUserName());
+    }
+
+    private void validateUserExistence(User user, int userId, String userType) {
+        if (user == null) {
+            throw new NotFoundException(String.format("%s user with id = %d not exists.", userType, userId));
+        }
+    }
+
+    private void validateFollowing(User currentUser, int userIdToUnfollow) {
+        if (currentUser.getFollowed() == null ||
+                currentUser.getFollowed().stream().filter(user -> user.getId() == userIdToUnfollow).findFirst().orElse(null) == null) {
+            throw new NotFollowingException("The current user does not follow the user to unfollow.");
+        }
     }
 }
