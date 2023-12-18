@@ -15,8 +15,6 @@ public interface IUserService {
 
     MessageDTO unfollowUser(int userId, int userIdToUnfollow);
 
-    UserFollowersDTO getFollowersUser(int userId);
-
     UserFollowedDTO getFollowedUser(int userId);
 
 }
