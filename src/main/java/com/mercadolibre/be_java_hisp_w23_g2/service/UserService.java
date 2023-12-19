@@ -43,24 +43,29 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserFollowersDTO getFollowersUser(int userId) {
+    public UserFollowersDTO getFollowersUser(int userId, String sortType) {
         User user = userRepository.findUserById(userId);
         validateUserExistence(user, userId, "Current");
 
         if (user.getFollowers() == null || user.getFollowers().isEmpty()) {
             throw new NotFoundException("User with id = " + userId + " has no followers");
         }
+        if(sortType != null){
+            user.setFollowers(userSortHandler(new ArrayList<>(user.getFollowers()), sortType));
+        }
         return Mapper.mapUserFollowersDTO(user);
-
     }
 
     @Override
-    public UserFollowedDTO getFollowedUser(int userId) {
+    public UserFollowedDTO getFollowedUser(int userId, String sortType) {
         User user = userRepository.findUserById(userId);
         validateUserExistence(user, userId, "Current");
 
         if (user.getFollowed() == null || user.getFollowed().isEmpty() ) {
             throw new NotFoundException("User with id = " + userId + " has no followed");
+        }
+        if(sortType != null){
+            user.setFollowed(userSortHandler(new ArrayList<>(user.getFollowed()), sortType));
         }
         return Mapper.mapUserFollowedDTO(user);
     }
@@ -127,13 +132,13 @@ public class UserService implements IUserService {
             }
         }
         if(sortType != null){
-            sortHandler(allPost, sortType);
+            postSortHandler(allPost, sortType);
         }
 
         return Mapper.mapPostFollowedDTO(user.getId(), allPost);
     }
 
-    public void sortHandler(List<Post> posts, String sortType){
+    public void postSortHandler(List<Post> posts, String sortType){
         String[] attributes = sortType.split("_");
         if(attributes.length < 2){
             return;
@@ -145,6 +150,21 @@ public class UserService implements IUserService {
                 posts.sort(Comparator.comparing(Post::getDate).reversed());
             }
         }
+    }
+
+    public List<User> userSortHandler(List<User> user, String sortType){
+        String[] attributes = sortType.split("_");
+        if(attributes.length < 2){
+            return user;
+        }
+        if("name".equals(attributes[0])){
+            if("asc".equals(attributes[1])){
+                user.sort(Comparator.comparing(User::getUserName));
+            }else{
+                user.sort(Comparator.comparing(User::getUserName).reversed());
+            }
+        }
+        return user;
     }
 
     private void validateUserExistence(User user, int userId, String userType) {
