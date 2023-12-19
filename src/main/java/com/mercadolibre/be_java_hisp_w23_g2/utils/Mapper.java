@@ -13,6 +13,9 @@ import com.mercadolibre.be_java_hisp_w23_g2.entity.User;
 
 import java.util.List;
 
+/**
+ * Utility class for mapping entities to DTOs and vice versa.
+ */
 public class Mapper {
 
     private static Mapper instance = null;

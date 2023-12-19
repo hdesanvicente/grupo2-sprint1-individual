@@ -5,6 +5,9 @@ import com.mercadolibre.be_java_hisp_w23_g2.exception.BadRequestException;
 import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFollowingException;
 import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFoundException;
 
+/**
+ * Utility class for validating user-related operations.
+ */
 public class Validator {
 
     private static Validator instance = null;

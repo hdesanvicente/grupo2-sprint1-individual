@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Repository class for handling user-related operations.
+ */
 @Repository
 public class UserRepository implements IUserRepository {
     private final List<User> users;
@@ -21,6 +24,12 @@ public class UserRepository implements IUserRepository {
         users = loadData();
     }
 
+    /**
+     * Finds a user by their ID.
+     *
+     * @param id The ID of the user to find.
+     * @return The User object with the specified ID, or null if not found.
+     */
     @Override
     public User findUserById(int id) {
         return users
@@ -30,16 +39,34 @@ public class UserRepository implements IUserRepository {
                 .orElse(null);
     }
 
+    /**
+     * Retrieves a list of all users. (Test)
+     *
+     * @return List of all users.
+     */
     @Override
     public List<User> getAll() {
         return users;
     }
 
+    /**
+     * Adds a post to a user's list of posts.
+     *
+     * @param user The user to add the post to.
+     * @param post The post to be added.
+     */
     @Override
     public void addPost(User user, Post post) {
         user.getPosts().add(post);
     }
 
+    /**
+     * Follows a user by adding them to the followed list.
+     *
+     * @param userId        The ID of the user initiating the follow.
+     * @param userIdToFollow The ID of the user to be followed.
+     * @return The updated User object after the follow operation.
+     */
     @Override
     public User followUser(int userId, int userIdToFollow) {
         User user = findUserById(userId);
@@ -48,6 +75,12 @@ public class UserRepository implements IUserRepository {
         return user;
     }
 
+    /**
+     * Unfollows a user by removing them from the followed list.
+     *
+     * @param currentUser   The user initiating the unfollow.
+     * @param userToUnfollow The user to be unfollowed.
+     */
     @Override
     public void unfollowUser(User currentUser, User userToUnfollow) {
         currentUser.getFollowed().remove(userToUnfollow);
@@ -55,6 +88,12 @@ public class UserRepository implements IUserRepository {
 
     }
 
+    /**
+     * Loads user data from a JSON file.
+     *
+     * @return List of User objects loaded from the JSON file.
+     * @throws IOException If an I/O error occurs while reading the JSON file.
+     */
     public List<User> loadData() throws IOException {
         File file = null;
         try {

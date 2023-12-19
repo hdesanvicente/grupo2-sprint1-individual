@@ -20,6 +20,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.*;
 
+/**
+ * Service class for handling user-related operations.
+ */
 @Service
 public class UserService implements IUserService {
     private final IUserRepository userRepository;
@@ -32,6 +35,12 @@ public class UserService implements IUserService {
         this.validator = Validator.getInstance();
     }
 
+    /**
+     * Retrieves the count of followers for a specified user.
+     *
+     * @param userId The ID of the user.
+     * @return UserFollowersCountDTO containing the count of followers.
+     */
     @Override
     public UserFollowersCountDTO getFollowersCountSeller(int userId) {
         User user = userRepository.findUserById(userId);
@@ -40,12 +49,24 @@ public class UserService implements IUserService {
         return mapper.mapUserFollowersCountDTO(user);
     }
 
+    /**
+     * Retrieves a list of all users.
+     *
+     * @return List of UserDTOs representing all users.
+     */
     public List<UserDTO> getAll() {
         List<User> users = userRepository.getAll();
 
         return users.stream().map(mapper::mapUserDTO).toList();
     }
 
+    /**
+     * Retrieves the followers of a specified user.
+     *
+     * @param userId   The ID of the user.
+     * @param sortType The sorting type for the followers list.
+     * @return UserFollowersDTO containing the list of followers.
+     */
     @Override
     public UserFollowersDTO getFollowersUser(int userId, String sortType) {
         User user = userRepository.findUserById(userId);
@@ -60,6 +81,13 @@ public class UserService implements IUserService {
         return mapper.mapUserFollowersDTO(user);
     }
 
+    /**
+     * Retrieves the users followed by a specified user.
+     *
+     * @param userId   The ID of the user.
+     * @param sortType The sorting type for the followed users list.
+     * @return UserFollowedDTO containing the list of followed users.
+     */
     @Override
     public UserFollowedDTO getFollowedUser(int userId, String sortType) {
         User user = userRepository.findUserById(userId);
@@ -74,6 +102,13 @@ public class UserService implements IUserService {
         return mapper.mapUserFollowedDTO(user);
     }
 
+    /**
+     * Unfollows a user.
+     *
+     * @param userId           The ID of the user initiating the unfollow.
+     * @param userIdToUnfollow The ID of the user to be unfollowed.
+     * @return MessageDTO indicating the success of the unfollow operation.
+     */
     @Override
     public MessageDTO unfollowUser(int userId, int userIdToUnfollow) {
         validator.validateThatItIsNotTheSameUser(userId, userIdToUnfollow);
@@ -91,6 +126,13 @@ public class UserService implements IUserService {
         return new MessageDTO("Has stopped following " + userToUnfollow.getUserName());
     }
 
+    /**
+     * Follows a user.
+     *
+     * @param userId         The ID of the user initiating the follow.
+     * @param userIdToFollow The ID of the user to be followed.
+     * @return UserFollowedDTO containing the updated list of followed users.
+     */
     @Override
     public UserFollowedDTO followUser(int userId, int userIdToFollow) {
         validator.validateThatItIsNotTheSameUser(userId, userIdToFollow);
@@ -108,6 +150,13 @@ public class UserService implements IUserService {
         return mapper.mapUserFollowedDTO(userRepository.followUser(userId,userIdToFollow));
     }
 
+    /**
+     * Retrieves posts from users followed by a specified user.
+     *
+     * @param userId   The ID of the user.
+     * @param sortType The sorting type for the posts list.
+     * @return PostFollowedDTO containing the list of posts from followed users.
+     */
     @Override
     public PostFollowedDTO getPostsByFollowedUsers(int userId, String sortType) {
         User user = userRepository.findUserById(userId);
@@ -138,6 +187,12 @@ public class UserService implements IUserService {
         return mapper.mapPostFollowedDTO(user.getId(), allPost);
     }
 
+    /**
+     * Handles sorting of posts based on the specified sort type.
+     *
+     * @param posts    The list of posts to be sorted.
+     * @param sortType The sorting type for the posts list.
+     */
     private void postSortHandler(List<Post> posts, String sortType){
         String[] attributes = sortType.split("_");
         if(attributes.length < 2){
@@ -152,6 +207,13 @@ public class UserService implements IUserService {
         }
     }
 
+    /**
+     * Handles sorting of users based on the specified sort type.
+     *
+     * @param user     The list of users to be sorted.
+     * @param sortType The sorting type for the users list.
+     * @return The sorted list of users.
+     */
     private List<User> userSortHandler(List<User> user, String sortType){
         String[] attributes = sortType.split("_");
         if(attributes.length < 2){
@@ -165,7 +227,6 @@ public class UserService implements IUserService {
             }
         }
         return user;
-
     }
 
 }
