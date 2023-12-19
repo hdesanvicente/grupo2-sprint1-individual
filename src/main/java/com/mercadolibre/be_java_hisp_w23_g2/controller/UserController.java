@@ -21,8 +21,8 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/followers/list")
-    public ResponseEntity<?> getFollowersUser(@PathVariable int userId) {
-        return ResponseEntity.ok(userService.getFollowersUser(userId));
+    public ResponseEntity<?> getFollowersUser(@PathVariable int userId, @RequestParam(required = false) String order) {
+        return ResponseEntity.ok(userService.getFollowersUser(userId, order));
     }
 
     @PostMapping("/{userId}/unfollow/{userIdToUnfollow}")
@@ -31,8 +31,8 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/followed/list")
-    public ResponseEntity<?> getFollowedUser(@PathVariable int userId) {
-        return ResponseEntity.ok(userService.getFollowedUser(userId));
+    public ResponseEntity<?> getFollowedUser(@PathVariable int userId, @RequestParam(required = false) String order) {
+        return ResponseEntity.ok(userService.getFollowedUser(userId, order));
     }
 
     @GetMapping("/all")

@@ -43,23 +43,29 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserFollowersDTO getFollowersUser(int userId) {
+    public UserFollowersDTO getFollowersUser(int userId, String sortType) {
         User user = userRepository.findUserById(userId);
         validateUserExistence(user, userId, "Current");
 
         if (user.getFollowers() == null || user.getFollowers().isEmpty()) {
             throw new NotFoundException("User with id = " + userId + " has no followers");
         }
+        if(sortType != null){
+            user.setFollowers(userSortHandler(new ArrayList<>(user.getFollowers()), sortType));
+        }
         return Mapper.mapUserFollowersDTO(user);
-
     }
 
     @Override
-    public UserFollowedDTO getFollowedUser(int userId) {
+    public UserFollowedDTO getFollowedUser(int userId, String sortType) {
         User user = userRepository.findUserById(userId);
         validateUserExistence(user, userId, "Current");
 
         checkIfUserHasFollowed(user);
+
+        if(sortType != null){
+            user.setFollowed(userSortHandler(new ArrayList<>(user.getFollowed()), sortType));
+        }
 
         return Mapper.mapUserFollowedDTO(user);
     }
@@ -99,7 +105,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public PostFollowedDTO getPostsByFollowedUsers(int userId) {
+    public PostFollowedDTO getPostsByFollowedUsers(int userId, String sortType) {
         User user = userRepository.findUserById(userId);
         validateUserExistence(user, userId, "Current");
 
@@ -121,10 +127,44 @@ public class UserService implements IUserService {
                 }
             }
         }
+        if(sortType != null){
+            postSortHandler(allPost, sortType);
+        }
+
         return Mapper.mapPostFollowedDTO(user.getId(), allPost);
     }
 
-    private void checkIfUserHasFollowed(User user) {
+    public void postSortHandler(List<Post> posts, String sortType){
+        String[] attributes = sortType.split("_");
+        if(attributes.length < 2){
+            return;
+        }
+        if("date".equals(attributes[0])){
+            if("asc".equals(attributes[1])){
+                posts.sort(Comparator.comparing(Post::getDate));
+            }else{
+                posts.sort(Comparator.comparing(Post::getDate).reversed());
+            }
+        }
+    }
+
+    public List<User> userSortHandler(List<User> user, String sortType){
+        String[] attributes = sortType.split("_");
+        if(attributes.length < 2){
+            return user;
+        }
+        if("name".equals(attributes[0])){
+            if("asc".equals(attributes[1])){
+                user.sort(Comparator.comparing(User::getUserName));
+            }else{
+                user.sort(Comparator.comparing(User::getUserName).reversed());
+            }
+        }
+        return user;
+
+    }
+  
+  private void checkIfUserHasFollowed(User user) {
         if (user.getFollowed() == null || user.getFollowed().isEmpty()) {
             throw new NotFoundException("User with id = " + user.getId() + " has no followed");
         }
