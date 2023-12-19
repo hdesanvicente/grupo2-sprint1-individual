@@ -1,12 +1,13 @@
 package com.mercadolibre.be_java_hisp_w23_g2.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.MessageDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.PostDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.Post;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.User;
 import com.mercadolibre.be_java_hisp_w23_g2.exception.BadRequestException;
 import com.mercadolibre.be_java_hisp_w23_g2.repository.IUserRepository;
+import com.mercadolibre.be_java_hisp_w23_g2.utils.Mapper;
+import com.mercadolibre.be_java_hisp_w23_g2.utils.Validator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +16,13 @@ import java.util.Optional;
 @Service
 public class ProductService implements IProductService {
     private final IUserRepository userRepository;
+    private final Validator validator;
+    private final Mapper mapper;
 
     public ProductService(IUserRepository userRepository) {
         this.userRepository = userRepository;
+        this.validator = new Validator();
+        this.mapper = new Mapper();
     }
 
     @Override
@@ -31,14 +36,12 @@ public class ProductService implements IProductService {
             throw new BadRequestException("The publication data entered is not correct.");
         }
 
-        ObjectMapper mapper = new ObjectMapper();
-        Post post = mapper.convertValue(postDTO, Post.class);
+        Post post = this.mapper.mapPostDTOToPost(postDTO);
 
         // Check that the user exists
         User user = userRepository.findUserById(post.getUserId());
-        if (user == null) {
-            throw new BadRequestException("The user does not exist.");
-        }
+
+        validator.validateUserExistence(user, post.getUserId(), "Current");
 
         // Check that there is no product with this id
         List<Post> postsUser = user.getPosts();
