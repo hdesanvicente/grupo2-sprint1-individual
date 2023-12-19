@@ -20,27 +20,7 @@ The be_java_hisp_w23_g2 project is a social platform that allows users to follow
 - JSON (for data storage)
 
 ## Project Structure
-be_java_hisp_w23_g2/
-│
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   ├── com/
-│   │   │   │   ├── mercadolibre/
-│   │   │   │   │   ├── be_java_hisp_w23_g2/
-│   │   │   │   │   │   ├── controller/
-│   │   │   │   │   │   ├── dto/
-│   │   │   │   │   │   ├── entity/
-│   │   │   │   │   │   ├── exception/
-│   │   │   │   │   │   ├── repository/
-│   │   │   │   │   │   └── service/
-│   │   ├── resources/
-│   │   └── webapp/
-│   │
-├── target/
-├── .gitignore
-├── README.md
-└── pom.xml
+![Project Structure](images/project-structure.png)
 
 ## Getting Started
 Follow these steps to set up the project on your local machine.
