@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service class for handling product-related operations.
+ */
 @Service
 public class ProductService implements IProductService {
     private final IUserRepository userRepository;
@@ -25,6 +28,12 @@ public class ProductService implements IProductService {
         this.mapper = new Mapper();
     }
 
+    /**
+     * Adds a new post based on the provided PostDTO.
+     *
+     * @param postDTO The PostDTO containing post information.
+     * @return MessageDTO indicating the success of the operation.
+     */
     @Override
     public MessageDTO addPost(PostDTO postDTO) {
         // Check that all parameters have been sent
