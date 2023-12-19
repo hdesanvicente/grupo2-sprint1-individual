@@ -21,8 +21,8 @@ public class ProductService implements IProductService {
 
     public ProductService(IUserRepository userRepository) {
         this.userRepository = userRepository;
-        this.validator = new Validator();
-        this.mapper = new Mapper();
+        this.validator = Validator.getInstance();
+        this.mapper = Mapper.getInstance();
     }
 
     @Override

@@ -7,6 +7,18 @@ import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFoundException;
 
 public class Validator {
 
+    private static Validator instance = null;
+    private Validator(){
+
+    }
+
+    public static Validator getInstance() {
+        if(instance==null){
+            instance=new Validator();
+        }
+        return instance;
+    }
+
     public void checkIfUserHasFollowed(User user) {
         if (user.getFollowed() == null || user.getFollowed().isEmpty()) {
             throw new NotFoundException("User with id = " + user.getId() + " has no followed");

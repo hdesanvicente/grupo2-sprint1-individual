@@ -28,8 +28,8 @@ public class UserService implements IUserService {
 
     public UserService(IUserRepository userRepository) {
         this.userRepository = userRepository;
-        this.mapper = new Mapper();
-        this.validator = new Validator();
+        this.mapper = Mapper.getInstance();
+        this.validator = Validator.getInstance();
     }
 
     @Override
