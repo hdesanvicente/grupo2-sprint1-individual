@@ -61,17 +61,19 @@ public class UserService implements IUserService {
         User user = userRepository.findUserById(userId);
         validateUserExistence(user, userId, "Current");
 
-        if (user.getFollowed() == null || user.getFollowed().isEmpty() ) {
-            throw new NotFoundException("User with id = " + userId + " has no followed");
-        }
+        checkIfUserHasFollowed(user);
+
         if(sortType != null){
             user.setFollowed(userSortHandler(new ArrayList<>(user.getFollowed()), sortType));
         }
+
         return Mapper.mapUserFollowedDTO(user);
     }
 
     @Override
     public MessageDTO unfollowUser(int userId, int userIdToUnfollow) {
+        validateThatItIsNotTheSameUser(userId, userIdToUnfollow);
+
         User currentUser = userRepository.findUserById(userId);
         validateUserExistence(currentUser, userId, "Current");
 
@@ -87,9 +89,7 @@ public class UserService implements IUserService {
 
     @Override
     public UserFollowedDTO followUser(int userId, int userIdToFollow) {
-        if (userId == userIdToFollow){
-            throw new BadRequestException("A user cannot follow himself");
-        }
+        validateThatItIsNotTheSameUser(userId, userIdToFollow);
 
         User user = userRepository.findUserById(userId);
         validateUserExistence(user, userId, "Current");
@@ -107,21 +107,17 @@ public class UserService implements IUserService {
     @Override
     public PostFollowedDTO getPostsByFollowedUsers(int userId, String sortType) {
         User user = userRepository.findUserById(userId);
-        if (user == null) {
-            throw new NotFoundException("User with id = " + userId + " not found");
-        }
-        if (user.getFollowed() == null || user.getFollowed().isEmpty()) {
-            throw new NotFoundException("User with id = " + userId + " has no followed");
-        }
+        validateUserExistence(user, userId, "Current");
+
+        checkIfUserHasFollowed(user);
 
         LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
         List<Post> allPost = new ArrayList<>();
 
         for (User followedUser : user.getFollowed()) {
             User userf = userRepository.findUserById(followedUser.getId());
-            if (userf == null) {
-                throw new NotFoundException("User followed with id = " + followedUser.getId() + " not found");
-            }
+            validateUserExistence(userf, followedUser.getId(), "Followed");
+
             if (userf.getPosts() == null || userf.getPosts().isEmpty()) {
                 throw new NotFoundException("User followed with id = " + followedUser.getId() + " has no post");
             }
@@ -165,6 +161,19 @@ public class UserService implements IUserService {
             }
         }
         return user;
+
+    }
+  
+  private void checkIfUserHasFollowed(User user) {
+        if (user.getFollowed() == null || user.getFollowed().isEmpty()) {
+            throw new NotFoundException("User with id = " + user.getId() + " has no followed");
+        }
+    }
+
+    private void validateThatItIsNotTheSameUser(int userId, int userId2){
+        if (userId == userId2){
+            throw new BadRequestException("A user cannot follow/unfollow himself");
+        }
     }
 
     private void validateUserExistence(User user, int userId, String userType) {
