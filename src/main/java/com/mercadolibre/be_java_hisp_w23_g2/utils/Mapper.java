@@ -15,6 +15,18 @@ import java.util.List;
 
 public class Mapper {
 
+    private static Mapper instance = null;
+    private Mapper(){
+
+    }
+
+    public static Mapper getInstance() {
+        if(instance==null){
+            instance=new Mapper();
+        }
+        return instance;
+    }
+
     public PostFollowedDTO mapPostFollowedDTO(int id, List<Post> posts) {
         return new PostFollowedDTO(id,posts.stream().map(this::mapPostToPostDTO).toList());
     }
