@@ -100,7 +100,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public PostFollowedDTO getPostsByFollowedUsers(int userId) {
+    public PostFollowedDTO getPostsByFollowedUsers(int userId, String sortType) {
         User user = userRepository.findUserById(userId);
         if (user == null) {
             throw new NotFoundException("User with id = " + userId + " not found");
@@ -126,7 +126,25 @@ public class UserService implements IUserService {
                 }
             }
         }
+        if(sortType != null){
+            sortHandler(allPost, sortType);
+        }
+
         return Mapper.mapPostFollowedDTO(user.getId(), allPost);
+    }
+
+    public void sortHandler(List<Post> posts, String sortType){
+        String[] attributes = sortType.split("_");
+        if(attributes.length < 2){
+            return;
+        }
+        if("date".equals(attributes[0])){
+            if("asc".equals(attributes[1])){
+                posts.sort(Comparator.comparing(Post::getDate));
+            }else{
+                posts.sort(Comparator.comparing(Post::getDate).reversed());
+            }
+        }
     }
 
     private void validateUserExistence(User user, int userId, String userType) {
