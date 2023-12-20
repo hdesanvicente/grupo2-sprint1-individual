@@ -1,5 +1,7 @@
 # be_java_hisp_w23_g2 Project
 
+## Name App: SocialMedia
+
 This project is designed to provide a platform for users to connect, follow each other, and share posts. The project is implemented in Java and Spring Boot.
 
 ## Introduction
@@ -12,6 +14,44 @@ The be_java_hisp_w23_g2 project is a social platform that allows users to follow
 - View posts from followed users
 - Retrieve followers and followed users
 - Count the number of followers for a specific user
+
+## Endpoints
+- [POST US-0001]
+  localhost:8080/users/{userId}/follow/{userIdToFollow}
+  Endpoint perform the “Follow” action to a user
+  Responsible: [Martin Lackington]
+- [POST US-0002]
+  localhost:8080/users/{userId}/followers/count
+  Endpoint perform the “Count followers” action to a user
+  Responsible: [Felipe Costa]
+- [POST US-0003]
+  localhost:8080/users/{userId}/followers/list
+  Endpoint perform the “List followers” action to a user
+  Responsible: [Felipe Costa]
+- [POST US-0004]
+  localhost:8080/users/{userId}/followed/list
+  Endpoint perform the “List followed” action to a user
+  Responsible: [Claudia Vargas]
+- [POST US-0005]
+  localhost:8080/products/post
+  Endpoint perform the “Create a Post” action to a user
+  Responsible: [Marcos Costanzo]
+- [POST US-0006]
+  localhost:8080/products/followed/{userId}/list
+  Endpoint perform the “List the posts from follwed” action to a user
+  Responsible: [Clauida Vargas]
+- [POST US-0007]
+  localhost:8080/users/{userId}/unfollow/{userIdToUnfollow}
+  Endpoint perform the “Unfollow user” action to a user
+  Responsible: [Jannett Aquino]
+- [POST US-0008]
+  localhost:8080/users/{UserID}/followers/list?order=name_asc
+  Endpoint perform the “List the followers in alphabetic order” action to a user
+  Responsible: [Hernan De San Vicente]
+- [POST US-0009]
+  localhost:8080/products/followed/{userId}/list?order=date_asc
+  Endpoint perform the “List the products from followed in date order” action to a user
+  Responsible: [Hernan De San Vicente]
 
 ## Technologies Used
 - Java
@@ -42,6 +82,9 @@ mvn clean install
 
 ### Run the application:
 mvn spring-boot:run
+
+### PostMan Collection
+Path: /src/main/resources/Sprint 1.postman_collection.json
 
 ### Integers:
 - Claudia Vargas
