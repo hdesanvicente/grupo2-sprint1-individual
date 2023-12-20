@@ -42,3 +42,24 @@ mvn clean install
 
 ### Run the application:
 mvn spring-boot:run
+
+### Integers:
+- Claudia Vargas
+- Felipe Costa
+- Hernan Martin De San Vicente
+- Jannett Arami Aquino Romero
+- Marcos Ezequiel Costanzo
+- Martin Lackington
+
+### Gratitude:
+We would like to express our sincere gratitude to the following team and communities for their invaluable contributions and support during the development of this project:
+
+- **[Equipo 2]:** [We extend our heartfelt gratitude to each member of the project team for their unwavering effort, dedication, and collaboration. This project wouldn't have been possible without the unique contributions of every individual.
+
+Special thanks to our Scrum Master, [Johanna Tabella], whose leadership, guidance, and commitment to the Agile principles played a pivotal role in the success of this project. Your expertise and support have been invaluable throughout the development process.
+
+We also want to express our appreciation to the wider open-source community for the wealth of knowledge and inspiration that fueled our journey.
+
+Thank you all for your hard work and commitment to excellence.]
+
+We are truly thankful for the open-source community and the wealth of knowledge and resources that have made this project possible. Your generosity and collaboration are greatly appreciated.
