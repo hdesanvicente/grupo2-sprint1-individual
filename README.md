@@ -84,7 +84,7 @@ mvn clean install
 mvn spring-boot:run
 
 ### PostMan Collection
-Path: [PostManCollection](https://github.com/hdesanvicente/grupo2-sprint1/blob/main/src/main/resources/Sprint%201.postman_collection.json)
+Path: [PostManCollection](src/main/resources/Sprint%201.postman_collection.json)
 
 ### Integers:
 - Claudia Vargas
