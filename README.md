@@ -20,15 +20,15 @@ The be_java_hisp_w23_g2 project is a social platform that allows users to follow
   - localhost:8080/users/{userId}/follow/{userIdToFollow}
   - Endpoint perform the “Follow” action to a user
   - Responsible: [Martin Lackington]
-- [POST US-0002]
+- [GET US-0002]
   - localhost:8080/users/{userId}/followers/count
   - Endpoint perform the “Count followers” action to a user
   - Responsible: [Felipe Costa]
-- [POST US-0003]
+- [GET US-0003]
   - localhost:8080/users/{userId}/followers/list
   - Endpoint perform the “List followers” action to a user
   - Responsible: [Felipe Costa]
-- [POST US-0004]
+- [GET US-0004]
   - localhost:8080/users/{userId}/followed/list
   - Endpoint perform the “List followed” action to a user
   - Responsible: [Claudia Vargas]
@@ -36,7 +36,7 @@ The be_java_hisp_w23_g2 project is a social platform that allows users to follow
   - localhost:8080/products/post
   - Endpoint perform the “Create a Post” action to a user
   - Responsible: [Marcos Costanzo]
-- [POST US-0006]
+- [GET US-0006]
   - localhost:8080/products/followed/{userId}/list
   - Endpoint perform the “List the posts from follwed” action to a user
   - Responsible: [Clauida Vargas]
@@ -44,11 +44,11 @@ The be_java_hisp_w23_g2 project is a social platform that allows users to follow
   - localhost:8080/users/{userId}/unfollow/{userIdToUnfollow}
   - Endpoint perform the “Unfollow user” action to a user
   - Responsible: [Jannett Aquino]
-- [POST US-0008]
+- [GET US-0008]
   - localhost:8080/users/{UserID}/followers/list?order=name_asc
   - Endpoint perform the “List the followers in alphabetic order” action to a user
   - Responsible: [Hernan De San Vicente]
-- [POST US-0009]
+- [GET US-0009]
   - localhost:8080/products/followed/{userId}/list?order=date_asc
   - Endpoint perform the “List the products from followed in date order” action to a user
   - Responsible: [Hernan De San Vicente]
