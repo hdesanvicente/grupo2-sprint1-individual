@@ -17,41 +17,41 @@ The be_java_hisp_w23_g2 project is a social platform that allows users to follow
 
 ## Endpoints
 - [POST US-0001]
-  localhost:8080/users/{userId}/follow/{userIdToFollow}
-  Endpoint perform the “Follow” action to a user
-  Responsible: [Martin Lackington]
+  - localhost:8080/users/{userId}/follow/{userIdToFollow}
+  - Endpoint perform the “Follow” action to a user
+  - Responsible: [Martin Lackington]
 - [POST US-0002]
-  localhost:8080/users/{userId}/followers/count
-  Endpoint perform the “Count followers” action to a user
-  Responsible: [Felipe Costa]
+  - localhost:8080/users/{userId}/followers/count
+  - Endpoint perform the “Count followers” action to a user
+  - Responsible: [Felipe Costa]
 - [POST US-0003]
-  localhost:8080/users/{userId}/followers/list
-  Endpoint perform the “List followers” action to a user
-  Responsible: [Felipe Costa]
+  - localhost:8080/users/{userId}/followers/list
+  - Endpoint perform the “List followers” action to a user
+  - Responsible: [Felipe Costa]
 - [POST US-0004]
-  localhost:8080/users/{userId}/followed/list
-  Endpoint perform the “List followed” action to a user
-  Responsible: [Claudia Vargas]
+  - localhost:8080/users/{userId}/followed/list
+  - Endpoint perform the “List followed” action to a user
+  - Responsible: [Claudia Vargas]
 - [POST US-0005]
-  localhost:8080/products/post
-  Endpoint perform the “Create a Post” action to a user
-  Responsible: [Marcos Costanzo]
+  - localhost:8080/products/post
+  - Endpoint perform the “Create a Post” action to a user
+  - Responsible: [Marcos Costanzo]
 - [POST US-0006]
-  localhost:8080/products/followed/{userId}/list
-  Endpoint perform the “List the posts from follwed” action to a user
-  Responsible: [Clauida Vargas]
+  - localhost:8080/products/followed/{userId}/list
+  - Endpoint perform the “List the posts from follwed” action to a user
+  - Responsible: [Clauida Vargas]
 - [POST US-0007]
-  localhost:8080/users/{userId}/unfollow/{userIdToUnfollow}
-  Endpoint perform the “Unfollow user” action to a user
-  Responsible: [Jannett Aquino]
+  - localhost:8080/users/{userId}/unfollow/{userIdToUnfollow}
+  - Endpoint perform the “Unfollow user” action to a user
+  - Responsible: [Jannett Aquino]
 - [POST US-0008]
-  localhost:8080/users/{UserID}/followers/list?order=name_asc
-  Endpoint perform the “List the followers in alphabetic order” action to a user
-  Responsible: [Hernan De San Vicente]
+  - localhost:8080/users/{UserID}/followers/list?order=name_asc
+  - Endpoint perform the “List the followers in alphabetic order” action to a user
+  - Responsible: [Hernan De San Vicente]
 - [POST US-0009]
-  localhost:8080/products/followed/{userId}/list?order=date_asc
-  Endpoint perform the “List the products from followed in date order” action to a user
-  Responsible: [Hernan De San Vicente]
+  - localhost:8080/products/followed/{userId}/list?order=date_asc
+  - Endpoint perform the “List the products from followed in date order” action to a user
+  - Responsible: [Hernan De San Vicente]
 
 ## Technologies Used
 - Java
@@ -74,8 +74,8 @@ Maven (version 3.9.5)
 ### Installation
 
 ### Clone the repository:
-git clone https://github.com/hdesanvicente/grupo2-sprint1.git
-cd grupo2-sprint1.git
+- git clone https://github.com/hdesanvicente/grupo2-sprint1.git
+- cd grupo2-sprint1.git
 
 ### Build the project:
 mvn clean install
@@ -84,7 +84,7 @@ mvn clean install
 mvn spring-boot:run
 
 ### PostMan Collection
-Path: /src/main/resources/Sprint 1.postman_collection.json
+Path: [/src/main/resources/Sprint 1.postman_collection.json] (/src/main/resources/Sprint 1.postman_collection.json)
 
 ### Integers:
 - Claudia Vargas
