@@ -192,7 +192,7 @@ public class UserService implements IUserService {
     private void postSortHandler(List<Post> posts, String sortType){
         String[] attributes = sortType.split("_");
         if(attributes.length < 2){
-            return;
+            throw new BadRequestException("The entered parameter is invalid.");
         }
         if("date".equals(attributes[0])){
             if("asc".equals(attributes[1])){
@@ -203,6 +203,8 @@ public class UserService implements IUserService {
             else {
                 throw new BadRequestException("The entered parameter is invalid.");
             }
+        }else {
+            throw new BadRequestException("The entered parameter is invalid.");
         }
     }
 
@@ -216,7 +218,7 @@ public class UserService implements IUserService {
     private List<User> userSortHandler(List<User> user, String sortType){
         String[] attributes = sortType.split("_");
         if(attributes.length < 2){
-            return user;
+            throw new BadRequestException("The entered parameter is invalid.");
         }
         if("name".equals(attributes[0])){
             if("asc".equals(attributes[1])){
@@ -226,6 +228,8 @@ public class UserService implements IUserService {
             } else {
                 throw new BadRequestException("The entered parameter is invalid.");
             }
+        } else {
+            throw new BadRequestException("The entered parameter is invalid.");
         }
         return user;
     }
