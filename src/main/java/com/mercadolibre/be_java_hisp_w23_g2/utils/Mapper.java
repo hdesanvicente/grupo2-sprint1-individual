@@ -18,54 +18,42 @@ import java.util.List;
  */
 public class Mapper {
 
-    private static Mapper instance = null;
-    private Mapper(){
-
+    public static PostFollowedDTO mapPostFollowedDTO(int id, List<Post> posts) {
+        return new PostFollowedDTO(id,posts.stream().map(Mapper::mapPostToPostDTO).toList());
     }
 
-    public static Mapper getInstance() {
-        if(instance==null){
-            instance=new Mapper();
-        }
-        return instance;
-    }
-
-    public PostFollowedDTO mapPostFollowedDTO(int id, List<Post> posts) {
-        return new PostFollowedDTO(id,posts.stream().map(this::mapPostToPostDTO).toList());
-    }
-
-    public PostDTO mapPostToPostDTO(Post post) {
+    public static PostDTO mapPostToPostDTO(Post post) {
         return new PostDTO(post.getUserId(),post.getId(), post.getDate(),mapProductToProductDTO(post.getProduct()),post.getCategory(),post.getPrice());
     }
 
-    public Post mapPostDTOToPost(PostDTO postDTO) {
+    public static Post mapPostDTOToPost(PostDTO postDTO) {
         return new Post(postDTO.getId(),postDTO.getUserId(), postDTO.getDate(),mapProductDTOToProduct(postDTO.getProduct()),postDTO.getCategory(),postDTO.getPrice());
     }
 
-    public ProductDTO mapProductToProductDTO(Product product) {
+    public static ProductDTO mapProductToProductDTO(Product product) {
         return new ProductDTO(product.getId(), product.getName(), product.getType(), product.getBrand(), product.getColor(), product.getNotes());
     }
 
-    public Product mapProductDTOToProduct(ProductDTO productDTO) {
+    public static Product mapProductDTOToProduct(ProductDTO productDTO) {
         return new Product(productDTO.getId(), productDTO.getName(), productDTO.getType(), productDTO.getBrand(), productDTO.getColor(), productDTO.getNotes());
     }
 
-    public UserDTO mapUserDTO(User user) {
+    public static UserDTO mapUserDTO(User user) {
         return new UserDTO(user.getId(), user.getUserName());
     }
 
-    public UserFollowersDTO mapUserFollowersDTO(User user) {
+    public static UserFollowersDTO mapUserFollowersDTO(User user) {
         return new UserFollowersDTO(user.getId(), user.getUserName(),
-                                    user.getFollowers().stream().map(this::mapUserDTO).toList());
+                                    user.getFollowers().stream().map(Mapper::mapUserDTO).toList());
     }
 
-    public UserFollowersCountDTO mapUserFollowersCountDTO(User user) {
+    public static UserFollowersCountDTO mapUserFollowersCountDTO(User user) {
         return new UserFollowersCountDTO(user.getId(), user.getUserName(), user.getFollowers().size());
     }
 
-    public UserFollowedDTO mapUserFollowedDTO(User user) {
+    public static UserFollowedDTO mapUserFollowedDTO(User user) {
         return new UserFollowedDTO(user.getId(), user.getUserName(),
-                                    user.getFollowed().stream().map(this::mapUserDTO).toList());
+                                    user.getFollowed().stream().map(Mapper::mapUserDTO).toList());
     }
 
 }
