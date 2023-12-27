@@ -12,6 +12,7 @@ import com.mercadolibre.be_java_hisp_w23_g2.entity.Post;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.User;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.Product;
 
+import com.mercadolibre.be_java_hisp_w23_g2.exception.BadRequestException;
 import com.mercadolibre.be_java_hisp_w23_g2.repository.UserRepository;
 
 import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFoundException;
@@ -42,6 +43,9 @@ class UserServiceTest {
   @Mock
   UserRepository repository;
 
+  @InjectMocks
+  UserService service;
+
     @DisplayName("T-0007 - US 02 - Followers count seller OK")
     @Test
     void getFollowersCountSellerTest() {
@@ -67,8 +71,6 @@ class UserServiceTest {
         // Assert
         Assertions.assertEquals(user.getFollowers().size(), expectedResult.getFollowersCount());
     }
-  @InjectMocks
-  UserService service;
 
   @Test
   void getFollowersCountSeller() {
@@ -135,7 +137,7 @@ class UserServiceTest {
   }
 
     @Test
-    @DisplayName("T-0003 Validates that alphabetical order exists on getFollowersUser (asc)")
+    @DisplayName("T-0004: Validates that alphabetical order exists on getFollowersUser (asc)")
     void getFollowersUserAscTest() {
         //ARRANGE
         User user_test = new User(1,"melilackington",null,List.of(new User(54,"zendaya99",null,null,null),
@@ -155,7 +157,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("T-0003 Validates that alphabetical order exists on getFollowersUser (desc)")
+    @DisplayName("T-0004: Validates that alphabetical order exists on getFollowersUser (desc)")
     void getFollowersUserDescTest() {
         //ARRANGE
         User user_test = new User(1,"melilackington",null,List.of(new User(54,"zendaya99",null,null,null),
@@ -175,8 +177,8 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("T-0003 Validates that alphabetical order exists on getFollowersUser Exception")
-    void getFollowersUserExceptionTest() {
+    @DisplayName("T-0004: Validates that alphabetical order exists on getFollowersUser Exception")
+    void getFollowersUserDescExceptionTest() {
         //ARRANGE
         List<User> empty_followers = new ArrayList<>();
         User user_test = new User(1,"melilackington",null,empty_followers,null);
@@ -278,7 +280,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("T-0003 Validates that alphabetical order exists on getFollowedUser (asc)")
+    @DisplayName("T-0004: Validates that alphabetical order exists on getFollowedUser (asc)")
     void getFollowedUserAscTest() {
         //ARRANGE
         User user_test = new User(1,"melilackington",null,null,List.of(new User(54,"zendaya99",null,null,null),
@@ -298,7 +300,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("T-0003 Validates that alphabetical order exists on getFollowedUser (desc)")
+    @DisplayName("T-0004: Validates that alphabetical order exists on getFollowedUser (desc)")
     void getFollowedUserDescTest() {
         //ARRANGE
         User user_test = new User(1,"melilackington",null,null,List.of(new User(54,"zendaya99",null,null,null),
@@ -318,8 +320,8 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("T-0003 Validates that alphabetical order exists on getFollowedUser Exception")
-    void getFollowedUserExceptionTest() {
+    @DisplayName("T-0004: Validates that alphabetical order exists on getFollowedUser Exception")
+    void getFollowedUserDescExceptionTest() {
         //ARRANGE
         List<User> empty_followed = new ArrayList<>();
         User user_test = new User(1,"melilackington",null,null,empty_followed);
@@ -328,5 +330,63 @@ class UserServiceTest {
 
         //ACT && ASSERT
         assertThrows(NotFoundException.class,()->service.getFollowedUser(1,"name_desc"));
+    }
+
+    @Test
+    @DisplayName("T-0003: Validates that alphabetical order exists (followed)")
+    void getFollowedUserTest(){
+        //ARRANGE
+        User user_test = new User(1,"melilackington",null,null,List.of(new User(54,"zendaya99",null,null,null),
+                new User(96,"tomHoland87",null,null,null)));
+
+        when(repository.findUserById(1)).thenReturn(user_test);
+
+        //ACT
+        UserFollowedDTO obtain = service.getFollowedUser(1,"name_asc");
+
+        //ASSERT
+        assertNotEquals(obtain,null);
+    }
+
+    @Test
+    @DisplayName("T-0003: Validates that alphabetical order exists Exception (followed)")
+    void getFollowedUserExceptionTest(){
+        //ARRANGE
+        User user_test = new User(1,"melilackington",null,null,List.of(new User(54,"zendaya99",null,null,null),
+                new User(96,"tomHoland87",null,null,null)));
+
+        when(repository.findUserById(1)).thenReturn(user_test);
+
+        //ACT && ASSERT
+        assertThrows(BadRequestException.class,()->service.getFollowedUser(1,"cualquier_cosa"));
+    }
+
+    @Test
+    @DisplayName("T-0003: Validates that alphabetical order exists (followers)")
+    void getFollowersUserTest(){
+        //ARRANGE
+        User user_test = new User(1,"melilackington",null,List.of(new User(54,"zendaya99",null,null,null),
+                new User(96,"tomHoland87",null,null,null)),null);
+
+        when(repository.findUserById(1)).thenReturn(user_test);
+
+        //ACT
+        UserFollowersDTO obtain = service.getFollowersUser(1,"name_asc");
+
+        //ASSERT
+        assertNotEquals(obtain,null);
+    }
+
+    @Test
+    @DisplayName("T-0003: Validates that alphabetical order exists Exception (followed)")
+    void getFollowersUserExceptionTest(){
+        //ARRANGE
+        User user_test = new User(1,"melilackington",null,List.of(new User(54,"zendaya99",null,null,null),
+                new User(96,"tomHoland87",null,null,null)),null);
+
+        when(repository.findUserById(1)).thenReturn(user_test);
+
+        //ACT && ASSERT
+        assertThrows(BadRequestException.class,()->service.getFollowersUser(1,"cualquier_cosa"));
     }
 }
