@@ -11,6 +11,7 @@ import com.mercadolibre.be_java_hisp_w23_g2.entity.User;
 
 import com.mercadolibre.be_java_hisp_w23_g2.exception.BadRequestException;
 
+import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFollowingException;
 import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFoundException;
 import com.mercadolibre.be_java_hisp_w23_g2.repository.IUserRepository;
 import com.mercadolibre.be_java_hisp_w23_g2.utils.Mapper;
@@ -27,12 +28,10 @@ import java.util.*;
 public class UserService implements IUserService {
     private final IUserRepository userRepository;
     private final Mapper mapper;
-    private final Validator validator;
 
     public UserService(IUserRepository userRepository) {
         this.userRepository = userRepository;
         this.mapper = Mapper.getInstance();
-        this.validator = Validator.getInstance();
     }
 
     /**
@@ -44,7 +43,7 @@ public class UserService implements IUserService {
     @Override
     public UserFollowersCountDTO getFollowersCountSeller(Integer userId) {
         User user = userRepository.findUserById(userId);
-        validator.validateUserExistence(user, userId, "Current");
+        validateUserExistence(user, userId, "Current");
 
         return mapper.mapUserFollowersCountDTO(user);
     }
@@ -70,7 +69,7 @@ public class UserService implements IUserService {
     @Override
     public UserFollowersDTO getFollowersUser(Integer userId, String sortType) {
         User user = userRepository.findUserById(userId);
-        validator.validateUserExistence(user, userId, "Current");
+        validateUserExistence(user, userId, "Current");
 
         if (user.getFollowers() == null || user.getFollowers().isEmpty()) {
             throw new NotFoundException("User with id = " + userId + " has no followers");
@@ -91,9 +90,9 @@ public class UserService implements IUserService {
     @Override
     public UserFollowedDTO getFollowedUser(Integer userId, String sortType) {
         User user = userRepository.findUserById(userId);
-        validator.validateUserExistence(user, userId, "Current");
+        validateUserExistence(user, userId, "Current");
 
-        validator.checkIfUserHasFollowed(user);
+        checkIfUserHasFollowed(user);
 
         if(sortType != null){
             user.setFollowed(userSortHandler(new ArrayList<>(user.getFollowed()), sortType));
@@ -111,15 +110,15 @@ public class UserService implements IUserService {
      */
     @Override
     public MessageDTO unfollowUser(Integer userId, Integer userIdToUnfollow) {
-        validator.validateThatItIsNotTheSameUser(userId, userIdToUnfollow);
+        validateThatItIsNotTheSameUser(userId, userIdToUnfollow);
 
         User currentUser = userRepository.findUserById(userId);
-        validator.validateUserExistence(currentUser, userId, "Current");
+        validateUserExistence(currentUser, userId, "Current");
 
         User userToUnfollow = userRepository.findUserById(userIdToUnfollow);
-        validator.validateUserExistence(userToUnfollow, userIdToUnfollow, "To unfollow");
+        validateUserExistence(userToUnfollow, userIdToUnfollow, "To unfollow");
 
-        validator.validateFollowing(currentUser, userIdToUnfollow);
+        validateFollowing(currentUser, userIdToUnfollow);
 
         userRepository.unfollowUser(currentUser, userToUnfollow);
 
@@ -135,13 +134,13 @@ public class UserService implements IUserService {
      */
     @Override
     public UserFollowedDTO followUser(Integer userId, Integer userIdToFollow) {
-        validator.validateThatItIsNotTheSameUser(userId, userIdToFollow);
+        validateThatItIsNotTheSameUser(userId, userIdToFollow);
 
         User user = userRepository.findUserById(userId);
-        validator.validateUserExistence(user, userId, "Current");
+        validateUserExistence(user, userId, "Current");
 
         User user2 = userRepository.findUserById(userIdToFollow);
-        validator.validateUserExistence(user2, userIdToFollow, "To Follow");
+        validateUserExistence(user2, userIdToFollow, "To Follow");
 
         if (user.getFollowed().contains(userRepository.findUserById(userIdToFollow))) {
             throw new BadRequestException("The user " + userId + " allready follow " + userIdToFollow);
@@ -160,16 +159,16 @@ public class UserService implements IUserService {
     @Override
     public PostFollowedDTO getPostsByFollowedUsers(Integer userId, String sortType) {
         User user = userRepository.findUserById(userId);
-        validator.validateUserExistence(user, userId, "Current");
+        validateUserExistence(user, userId, "Current");
 
-        validator.checkIfUserHasFollowed(user);
+        checkIfUserHasFollowed(user);
 
         LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
         List<Post> allPost = new ArrayList<>();
 
         for (User followedUser : user.getFollowed()) {
             User userf = userRepository.findUserById(followedUser.getId());
-            validator.validateUserExistence(userf, followedUser.getId(), "Followed");
+            validateUserExistence(userf, followedUser.getId(), "Followed");
 
             if (userf.getPosts() == null || userf.getPosts().isEmpty()) {
                 throw new NotFoundException("User followed with id = " + followedUser.getId() + " has no post");
@@ -227,6 +226,32 @@ public class UserService implements IUserService {
             }
         }
         return user;
+    }
+
+    private void checkIfUserHasFollowed(User user) {
+        if (user.getFollowed() == null || user.getFollowed().isEmpty()) {
+            throw new NotFoundException("User with id = " + user.getId() + " has no followed");
+        }
+    }
+
+    private void validateThatItIsNotTheSameUser(int userId, int userId2){
+        if (userId == userId2){
+            throw new BadRequestException("A user cannot follow/unfollow himself");
+        }
+    }
+
+    private void validateUserExistence(User user, int userId, String userType) {
+        if (user == null) {
+            throw new NotFoundException(String.format("%s user with id = %d not exists.", userType, userId));
+        }
+    }
+
+    private void validateFollowing(User currentUser, int userIdToUnfollow) {
+        if (currentUser.getFollowed() == null ||
+                currentUser.getFollowed().stream().filter(user -> user.getId() == userIdToUnfollow).findFirst().orElse(null) == null) {
+            throw new NotFollowingException("The current user does not follow the user to unfollow.");
+        }
+
     }
 
 }
