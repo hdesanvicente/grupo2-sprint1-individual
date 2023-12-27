@@ -5,6 +5,7 @@ import com.mercadolibre.be_java_hisp_w23_g2.dto.PostDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.Post;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.User;
 import com.mercadolibre.be_java_hisp_w23_g2.exception.BadRequestException;
+import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFoundException;
 import com.mercadolibre.be_java_hisp_w23_g2.repository.IUserRepository;
 import com.mercadolibre.be_java_hisp_w23_g2.utils.Mapper;
 import com.mercadolibre.be_java_hisp_w23_g2.utils.Validator;
@@ -19,12 +20,10 @@ import java.util.Optional;
 @Service
 public class ProductService implements IProductService {
     private final IUserRepository userRepository;
-    private final Validator validator;
     private final Mapper mapper;
 
     public ProductService(IUserRepository userRepository) {
         this.userRepository = userRepository;
-        this.validator = Validator.getInstance();
         this.mapper = Mapper.getInstance();
     }
 
@@ -50,7 +49,7 @@ public class ProductService implements IProductService {
         // Check that the user exists
         User user = userRepository.findUserById(post.getUserId());
 
-        validator.validateUserExistence(user, post.getUserId(), "Current");
+        validateUserExistence(user, post.getUserId(), "Current");
 
         // Check that there is no product with this id
         List<Post> postsUser = user.getPosts();
@@ -64,6 +63,12 @@ public class ProductService implements IProductService {
         userRepository.addPost(user, post);
 
         return new MessageDTO("Publication successfully added.");
+    }
+
+    private void validateUserExistence(User user, int userId, String userType) {
+        if (user == null) {
+            throw new NotFoundException(String.format("%s user with id = %d not exists.", userType, userId));
+        }
     }
 
 }
