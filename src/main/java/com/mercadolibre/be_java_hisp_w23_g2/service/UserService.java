@@ -197,8 +197,11 @@ public class UserService implements IUserService {
         if("date".equals(attributes[0])){
             if("asc".equals(attributes[1])){
                 posts.sort(Comparator.comparing(Post::getDate));
-            }else{
+            }else if ("desc".equals(attributes[1])){
                 posts.sort(Comparator.comparing(Post::getDate).reversed());
+            }
+            else {
+                throw new BadRequestException("The entered parameter is invalid.");
             }
         }
     }
@@ -218,8 +221,10 @@ public class UserService implements IUserService {
         if("name".equals(attributes[0])){
             if("asc".equals(attributes[1])){
                 user.sort(Comparator.comparing(User::getUserName));
-            }else{
+            }else if("desc".equals(attributes[1])){
                 user.sort(Comparator.comparing(User::getUserName).reversed());
+            } else {
+                throw new BadRequestException("The entered parameter is invalid.");
             }
         }
         return user;
