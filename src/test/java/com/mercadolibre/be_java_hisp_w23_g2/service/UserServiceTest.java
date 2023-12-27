@@ -1,12 +1,12 @@
 package com.mercadolibre.be_java_hisp_w23_g2.service;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mercadolibre.be_java_hisp_w23_g2.dto.MessageDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowedDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowersDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.PostDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.PostFollowedDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowersCountDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.MessageDTO;
 
 import com.mercadolibre.be_java_hisp_w23_g2.entity.Post;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.User;
@@ -15,6 +15,7 @@ import com.mercadolibre.be_java_hisp_w23_g2.entity.Product;
 import com.mercadolibre.be_java_hisp_w23_g2.repository.UserRepository;
 
 import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFoundException;
+import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFollowingException;
 
 import static org.mockito.Mockito.when;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,6 +27,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Stream;
+import java.util.Optional;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -46,6 +49,31 @@ class UserServiceTest {
   @Mock
   UserRepository repository;
 
+    @DisplayName("T-0007 - US 02 - Followers count seller OK")
+    @Test
+    void getFollowersCountSellerTest() {
+        //Arrange
+        User user = new User();
+        user.setId(1);
+        user.setUserName("John Doe");
+
+        User follower1 = new User();
+        User follower2 = new User();
+
+        follower1.setId(2);
+        follower1.setUserName("Alice Smith");
+        follower2.setId(3);
+        follower2.setUserName("Bob Jones");
+
+        user.setFollowers(List.of(follower1, follower2));
+        when(repository.findUserById(user.getId())).thenReturn(user);
+
+        // Act
+        UserFollowersCountDTO expectedResult = service.getFollowersCountSeller(user.getId());
+
+        // Assert
+        Assertions.assertEquals(user.getFollowers().size(), expectedResult.getFollowersCount());
+    }
   @InjectMocks
   UserService service;
 
