@@ -15,7 +15,6 @@ import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFollowingException;
 import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFoundException;
 import com.mercadolibre.be_java_hisp_w23_g2.repository.IUserRepository;
 import com.mercadolibre.be_java_hisp_w23_g2.utils.Mapper;
-import com.mercadolibre.be_java_hisp_w23_g2.utils.Validator;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -27,11 +26,9 @@ import java.util.*;
 @Service
 public class UserService implements IUserService {
     private final IUserRepository userRepository;
-    private final Mapper mapper;
 
     public UserService(IUserRepository userRepository) {
         this.userRepository = userRepository;
-        this.mapper = Mapper.getInstance();
     }
 
     /**
@@ -45,7 +42,7 @@ public class UserService implements IUserService {
         User user = userRepository.findUserById(userId);
         validateUserExistence(user, userId, "Current");
 
-        return mapper.mapUserFollowersCountDTO(user);
+        return Mapper.mapUserFollowersCountDTO(user);
     }
 
     /**
@@ -56,7 +53,7 @@ public class UserService implements IUserService {
     public List<UserDTO> getAll() {
         List<User> users = userRepository.getAll();
 
-        return users.stream().map(mapper::mapUserDTO).toList();
+        return users.stream().map(Mapper::mapUserDTO).toList();
     }
 
     /**
@@ -77,7 +74,7 @@ public class UserService implements IUserService {
         if(sortType != null){
             user.setFollowers(userSortHandler(new ArrayList<>(user.getFollowers()), sortType));
         }
-        return mapper.mapUserFollowersDTO(user);
+        return Mapper.mapUserFollowersDTO(user);
     }
 
     /**
@@ -98,7 +95,7 @@ public class UserService implements IUserService {
             user.setFollowed(userSortHandler(new ArrayList<>(user.getFollowed()), sortType));
         }
 
-        return mapper.mapUserFollowedDTO(user);
+        return Mapper.mapUserFollowedDTO(user);
     }
 
     /**
@@ -146,7 +143,7 @@ public class UserService implements IUserService {
             throw new BadRequestException("The user " + userId + " allready follow " + userIdToFollow);
         }
 
-        return mapper.mapUserFollowedDTO(userRepository.followUser(userId,userIdToFollow));
+        return Mapper.mapUserFollowedDTO(userRepository.followUser(userId,userIdToFollow));
     }
 
     /**
@@ -183,7 +180,7 @@ public class UserService implements IUserService {
             postSortHandler(allPost, sortType);
         }
 
-        return mapper.mapPostFollowedDTO(user.getId(), allPost);
+        return Mapper.mapPostFollowedDTO(user.getId(), allPost);
     }
 
     /**

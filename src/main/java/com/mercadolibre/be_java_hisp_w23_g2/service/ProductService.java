@@ -8,7 +8,6 @@ import com.mercadolibre.be_java_hisp_w23_g2.exception.BadRequestException;
 import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFoundException;
 import com.mercadolibre.be_java_hisp_w23_g2.repository.IUserRepository;
 import com.mercadolibre.be_java_hisp_w23_g2.utils.Mapper;
-import com.mercadolibre.be_java_hisp_w23_g2.utils.Validator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,11 +19,9 @@ import java.util.Optional;
 @Service
 public class ProductService implements IProductService {
     private final IUserRepository userRepository;
-    private final Mapper mapper;
 
     public ProductService(IUserRepository userRepository) {
         this.userRepository = userRepository;
-        this.mapper = Mapper.getInstance();
     }
 
     /**
@@ -44,7 +41,7 @@ public class ProductService implements IProductService {
             throw new BadRequestException("The publication data entered is not correct.");
         }
 
-        Post post = this.mapper.mapPostDTOToPost(postDTO);
+        Post post = Mapper.mapPostDTOToPost(postDTO);
 
         // Check that the user exists
         User user = userRepository.findUserById(post.getUserId());
