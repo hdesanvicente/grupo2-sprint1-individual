@@ -1,34 +1,39 @@
 package com.mercadolibre.be_java_hisp_w23_g2.service;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.MessageDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowedDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowersDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.PostDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.PostFollowedDTO;
 
+import com.mercadolibre.be_java_hisp_w23_g2.entity.Post;
+import com.mercadolibre.be_java_hisp_w23_g2.entity.User;
+import com.mercadolibre.be_java_hisp_w23_g2.entity.Product;
+
+import com.mercadolibre.be_java_hisp_w23_g2.repository.UserRepository;
+
 import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFoundException;
+
 import static org.mockito.Mockito.when;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.mercadolibre.be_java_hisp_w23_g2.entity.Post;
-import com.mercadolibre.be_java_hisp_w23_g2.entity.Product;
-import com.mercadolibre.be_java_hisp_w23_g2.entity.User;
-import com.mercadolibre.be_java_hisp_w23_g2.repository.UserRepository;
-
 import java.time.LocalDate;
+
 import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Stream;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -159,6 +164,47 @@ class UserServiceTest {
         assertThrows(NotFoundException.class,()->service.getFollowersUser(1,"name_desc"));
     }
 
+    @Test
+    @DisplayName("T-0001: Verify that the user to follow exists.")
+    void followUserTest() {
+        // ARRANGE
+        User userToFollow = new User();
+        userToFollow.setId(1);
+        userToFollow.setUserName("John Doe");
+
+        User userFollower = new User();
+        userFollower.setId(2);
+        userFollower.setUserName("Alice Smith");
+
+        when(repository.findUserById(1)).thenReturn(userToFollow);
+        when(repository.findUserById(2)).thenReturn(userFollower);
+        when(repository.followUser(2,1)).thenReturn(userToFollow);
+
+        UserFollowedDTO expected = new UserFollowedDTO(1, "John Doe", List.of(new UserDTO(2, "Alice Smith")));
+
+        // ACT
+        UserFollowedDTO result = service.followUser(2, 1);
+
+        // ASSERT
+        assertEquals(expected, result);
+    }
+
+    @Test
+    @DisplayName("T-0001: Verify that the user to follow exists. Exception.")
+    void followUserExceptionTest(){
+        // ARRANGE
+        User userFollower = new User();
+        userFollower.setId(2);
+        userFollower.setUserName("Alice Smith");
+
+        when(repository.findUserById(2)).thenReturn(userFollower);
+
+        // ACT & ASSERT
+        assertThrows(NotFoundException.class, () -> {
+            service.followUser(2, 1);
+        });
+    }
+  
     @Test
     @DisplayName("T-0003 Validates that alphabetical order exists on getFollowedUser (asc)")
     void getFollowedUserAscTest() {
