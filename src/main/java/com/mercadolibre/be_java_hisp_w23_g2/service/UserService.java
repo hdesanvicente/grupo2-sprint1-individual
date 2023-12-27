@@ -68,7 +68,7 @@ public class UserService implements IUserService {
         User user = userRepository.findUserById(userId);
         validateUserExistence(user, userId, "Current");
 
-        if (user.getFollowers() == null || user.getFollowers().isEmpty()) {
+        if (user.getFollowers().isEmpty()) {
             throw new NotFoundException("User with id = " + userId + " has no followers");
         }
         if(sortType != null){
@@ -171,7 +171,7 @@ public class UserService implements IUserService {
                 throw new NotFoundException("User followed with id = " + followedUser.getId() + " has no post");
             }
             for (Post postF : userf.getPosts()) {
-                if (postF.getDate().isAfter(twoWeeksAgo)) {
+                if (postF.getDate().isAfter(twoWeeksAgo) || postF.getDate().isEqual(twoWeeksAgo)) {
                     allPost.add(postF);
                 }
             }
