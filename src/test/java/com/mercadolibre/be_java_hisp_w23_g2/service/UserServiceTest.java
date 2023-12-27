@@ -21,6 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.LocalDate;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Stream;
@@ -90,7 +92,7 @@ class UserServiceTest {
     Post post31 = new Post(1, 3, LocalDate.now().minusWeeks(1), new Product(), null, 0.0);
     Post post32 = new Post(2, 3, LocalDate.now().minusDays(15), new Product(), null, 0.0);
     Post post33 = new Post(3, 3, LocalDate.now().minusDays(14), new Product(), null, 0.0);
-    
+
     follower1.setPosts(List.of(post21, post22, post23, post24));
     follower2.setPosts(List.of(post31, post32, post33));
 
@@ -168,19 +170,27 @@ class UserServiceTest {
     @DisplayName("T-0001: Verify that the user to follow exists.")
     void followUserTest() {
         // ARRANGE
+        User user = new User();
+        user.setId(2);
+        user.setUserName("Alice Smith");
+
         User userToFollow = new User();
         userToFollow.setId(1);
         userToFollow.setUserName("John Doe");
+        userToFollow.setFollowers(new ArrayList<>());
+        userToFollow.setFollowed(List.of(user));
 
         User userFollower = new User();
         userFollower.setId(2);
         userFollower.setUserName("Alice Smith");
+        userFollower.setFollowers(new ArrayList<>());
+        userFollower.setFollowed(new ArrayList<>());
 
         when(repository.findUserById(1)).thenReturn(userToFollow);
         when(repository.findUserById(2)).thenReturn(userFollower);
         when(repository.followUser(2,1)).thenReturn(userToFollow);
 
-        UserFollowedDTO expected = new UserFollowedDTO(1, "John Doe", List.of(new UserDTO(2, "Alice Smith")));
+        UserFollowedDTO expected = new UserFollowedDTO(1, "John Doe", new ArrayList<>(List.of(new UserDTO(2, "Alice Smith"))));
 
         // ACT
         UserFollowedDTO result = service.followUser(2, 1);
@@ -204,7 +214,7 @@ class UserServiceTest {
             service.followUser(2, 1);
         });
     }
-  
+
     @Test
     @DisplayName("T-0003 Validates that alphabetical order exists on getFollowedUser (asc)")
     void getFollowedUserAscTest() {
