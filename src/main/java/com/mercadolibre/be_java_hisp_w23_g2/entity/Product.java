@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Product {
     @JsonProperty("product_id")
-    private int id;
+    private Integer id;
     @JsonProperty("product_name")
     private String name;
     private String type;

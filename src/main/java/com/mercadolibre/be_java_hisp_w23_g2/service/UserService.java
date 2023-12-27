@@ -42,7 +42,7 @@ public class UserService implements IUserService {
      * @return UserFollowersCountDTO containing the count of followers.
      */
     @Override
-    public UserFollowersCountDTO getFollowersCountSeller(int userId) {
+    public UserFollowersCountDTO getFollowersCountSeller(Integer userId) {
         User user = userRepository.findUserById(userId);
         validator.validateUserExistence(user, userId, "Current");
 
@@ -68,7 +68,7 @@ public class UserService implements IUserService {
      * @return UserFollowersDTO containing the list of followers.
      */
     @Override
-    public UserFollowersDTO getFollowersUser(int userId, String sortType) {
+    public UserFollowersDTO getFollowersUser(Integer userId, String sortType) {
         User user = userRepository.findUserById(userId);
         validator.validateUserExistence(user, userId, "Current");
 
@@ -89,7 +89,7 @@ public class UserService implements IUserService {
      * @return UserFollowedDTO containing the list of followed users.
      */
     @Override
-    public UserFollowedDTO getFollowedUser(int userId, String sortType) {
+    public UserFollowedDTO getFollowedUser(Integer userId, String sortType) {
         User user = userRepository.findUserById(userId);
         validator.validateUserExistence(user, userId, "Current");
 
@@ -110,7 +110,7 @@ public class UserService implements IUserService {
      * @return MessageDTO indicating the success of the unfollow operation.
      */
     @Override
-    public MessageDTO unfollowUser(int userId, int userIdToUnfollow) {
+    public MessageDTO unfollowUser(Integer userId, Integer userIdToUnfollow) {
         validator.validateThatItIsNotTheSameUser(userId, userIdToUnfollow);
 
         User currentUser = userRepository.findUserById(userId);
@@ -134,7 +134,7 @@ public class UserService implements IUserService {
      * @return UserFollowedDTO containing the updated list of followed users.
      */
     @Override
-    public UserFollowedDTO followUser(int userId, int userIdToFollow) {
+    public UserFollowedDTO followUser(Integer userId, Integer userIdToFollow) {
         validator.validateThatItIsNotTheSameUser(userId, userIdToFollow);
 
         User user = userRepository.findUserById(userId);
@@ -158,7 +158,7 @@ public class UserService implements IUserService {
      * @return PostFollowedDTO containing the list of posts from followed users.
      */
     @Override
-    public PostFollowedDTO getPostsByFollowedUsers(int userId, String sortType) {
+    public PostFollowedDTO getPostsByFollowedUsers(Integer userId, String sortType) {
         User user = userRepository.findUserById(userId);
         validator.validateUserExistence(user, userId, "Current");
 

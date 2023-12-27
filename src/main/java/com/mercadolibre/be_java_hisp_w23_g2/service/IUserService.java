@@ -10,11 +10,11 @@ import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowersDTO;
 import java.util.List;
 
 public interface IUserService {
-    UserFollowersCountDTO getFollowersCountSeller(int userId);
+    UserFollowersCountDTO getFollowersCountSeller(Integer userId);
     List<UserDTO> getAll();
-    UserFollowedDTO followUser(int userId, int userIdToFollow);
-    MessageDTO unfollowUser(int userId, int userIdToUnfollow);
-    UserFollowersDTO getFollowersUser(int userId, String sortType);
-    UserFollowedDTO getFollowedUser(int userId, String sortType);
-    PostFollowedDTO getPostsByFollowedUsers(int userId, String sortType);
+    UserFollowedDTO followUser(Integer userId, Integer userIdToFollow);
+    MessageDTO unfollowUser(Integer userId, Integer userIdToUnfollow);
+    UserFollowersDTO getFollowersUser(Integer userId, String sortType);
+    UserFollowedDTO getFollowedUser(Integer userId, String sortType);
+    PostFollowedDTO getPostsByFollowedUsers(Integer userId, String sortType);
 }
