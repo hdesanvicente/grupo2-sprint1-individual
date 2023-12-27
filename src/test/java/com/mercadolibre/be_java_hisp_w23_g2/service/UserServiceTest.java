@@ -15,20 +15,15 @@ import com.mercadolibre.be_java_hisp_w23_g2.entity.Product;
 import com.mercadolibre.be_java_hisp_w23_g2.repository.UserRepository;
 
 import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFoundException;
-import com.mercadolibre.be_java_hisp_w23_g2.exception.NotFollowingException;
 
 import static org.mockito.Mockito.when;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.LocalDate;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Stream;
-import java.util.Optional;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -37,11 +32,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -198,21 +191,17 @@ class UserServiceTest {
     @DisplayName("T-0001: Verify that the user to follow exists.")
     void followUserTest() {
         // ARRANGE
-        User user = new User();
-        user.setId(2);
-        user.setUserName("Alice Smith");
+        User userFollower = new User();
+        userFollower.setId(2);
+        userFollower.setUserName("Alice Smith");
+        userFollower.setFollowers(List.of());
+        userFollower.setFollowed(List.of());
 
         User userToFollow = new User();
         userToFollow.setId(1);
         userToFollow.setUserName("John Doe");
-        userToFollow.setFollowers(new ArrayList<>());
-        userToFollow.setFollowed(List.of(user));
-
-        User userFollower = new User();
-        userFollower.setId(2);
-        userFollower.setUserName("Alice Smith");
-        userFollower.setFollowers(new ArrayList<>());
-        userFollower.setFollowed(new ArrayList<>());
+        userToFollow.setFollowers(List.of());
+        userToFollow.setFollowed(List.of(userFollower));
 
         when(repository.findUserById(1)).thenReturn(userToFollow);
         when(repository.findUserById(2)).thenReturn(userFollower);
@@ -240,6 +229,51 @@ class UserServiceTest {
         // ACT & ASSERT
         assertThrows(NotFoundException.class, () -> {
             service.followUser(2, 1);
+        });
+    }
+
+    @Test
+    @DisplayName("T-0002: Verify that the user to unfollow exists.")
+    void unfollowUserTest() {
+        // ARRANGE
+        User userToUnfollow = new User();
+        userToUnfollow.setId(2);
+        userToUnfollow.setUserName("Alice Smith");
+        userToUnfollow.setFollowers(List.of());
+        userToUnfollow.setFollowed(List.of());
+
+        User userFollower = new User();
+        userFollower.setId(1);
+        userFollower.setUserName("John Doe");
+        userFollower.setFollowers(List.of());
+        userFollower.setFollowed(List.of(userToUnfollow));
+
+        when(repository.findUserById(1)).thenReturn(userFollower);
+        when(repository.findUserById(2)).thenReturn(userToUnfollow);
+
+        String expected = "Has stopped following Alice Smith";
+
+        // ACT
+        MessageDTO result = service.unfollowUser(1, 2);
+
+        // ASSERT
+        assertNotNull(result);
+        assertEquals(expected, result.getMessage());
+    }
+
+    @Test
+    @DisplayName("T-0002: Verify that the user to unfollow exists. Exception.")
+    void unfollowUserExceptionTest() {
+        // ARRANGE
+        User userFollower = new User();
+        userFollower.setId(1);
+        userFollower.setUserName("John Doe");
+
+        when(repository.findUserById(1)).thenReturn(userFollower);
+
+        // ACT & ASSERT
+        assertThrows(NotFoundException.class, () -> {
+            service.unfollowUser(1, 2);
         });
     }
 
