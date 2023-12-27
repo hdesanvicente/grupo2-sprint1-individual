@@ -171,7 +171,7 @@ public class UserService implements IUserService {
                 throw new NotFoundException("User followed with id = " + followedUser.getId() + " has no post");
             }
             for (Post postF : userf.getPosts()) {
-                if (postF.getDate().isAfter(twoWeeksAgo)) {
+                if (postF.getDate().isAfter(twoWeeksAgo) || postF.getDate().isEqual(twoWeeksAgo)) {
                     allPost.add(postF);
                 }
             }
