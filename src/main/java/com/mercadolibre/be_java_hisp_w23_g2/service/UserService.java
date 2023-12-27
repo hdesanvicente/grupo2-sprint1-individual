@@ -68,7 +68,7 @@ public class UserService implements IUserService {
         User user = userRepository.findUserById(userId);
         validateUserExistence(user, userId, "Current");
 
-        if (user.getFollowers() == null || user.getFollowers().isEmpty()) {
+        if (user.getFollowers().isEmpty()) {
             throw new NotFoundException("User with id = " + userId + " has no followers");
         }
         if(sortType != null){
