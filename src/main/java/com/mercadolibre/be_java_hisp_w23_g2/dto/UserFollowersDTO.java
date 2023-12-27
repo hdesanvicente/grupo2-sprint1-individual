@@ -16,7 +16,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserFollowersDTO {
     @JsonProperty("user_id")
-    private int id;
+    private Integer id;
     @JsonProperty("user_name")
     private String userName;
     private List<UserDTO> followers;

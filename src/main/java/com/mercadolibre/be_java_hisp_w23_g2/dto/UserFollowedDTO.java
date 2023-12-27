@@ -16,7 +16,7 @@ import java.util.List;
 @JsonPropertyOrder({"user_id", "user_name","followed" })
 public class UserFollowedDTO {
     @JsonProperty("user_id")
-    private int id;
+    private Integer id;
     @JsonProperty("user_name")
     private String userName;
     private List<UserDTO> followed;

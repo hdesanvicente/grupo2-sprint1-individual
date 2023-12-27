@@ -24,7 +24,7 @@ public class UserController {
      * @return ResponseEntity with the result of the getFollowersCountSeller operation.
      */
     @GetMapping("/{userId}/followers/count")
-    public ResponseEntity<?> getFollowersCountSeller(@PathVariable int userId) {
+    public ResponseEntity<?> getFollowersCountSeller(@PathVariable Integer userId) {
         return ResponseEntity.ok(userService.getFollowersCountSeller(userId));
     }
 
@@ -36,7 +36,7 @@ public class UserController {
      * @return ResponseEntity with the result of the getFollowersUser operation.
      */
     @GetMapping("/{userId}/followers/list")
-    public ResponseEntity<?> getFollowersUser(@PathVariable int userId, @RequestParam(required = false) String order) {
+    public ResponseEntity<?> getFollowersUser(@PathVariable Integer userId, @RequestParam(required = false) String order) {
         return ResponseEntity.ok(userService.getFollowersUser(userId, order));
     }
 
@@ -48,7 +48,7 @@ public class UserController {
      * @return ResponseEntity with the result of the unfollowUser operation.
      */
     @PostMapping("/{userId}/unfollow/{userIdToUnfollow}")
-    public ResponseEntity<?> unfollowUser(@PathVariable int userId, @PathVariable int userIdToUnfollow){
+    public ResponseEntity<?> unfollowUser(@PathVariable Integer userId, @PathVariable Integer userIdToUnfollow){
         return ResponseEntity.ok(userService.unfollowUser(userId, userIdToUnfollow));
     }
 
@@ -60,7 +60,7 @@ public class UserController {
      * @return ResponseEntity with the result of the getFollowedUser operation.
      */
     @GetMapping("/{userId}/followed/list")
-    public ResponseEntity<?> getFollowedUser(@PathVariable int userId, @RequestParam(required = false) String order) {
+    public ResponseEntity<?> getFollowedUser(@PathVariable Integer userId, @RequestParam(required = false) String order) {
         return ResponseEntity.ok(userService.getFollowedUser(userId, order));
     }
 
@@ -82,7 +82,7 @@ public class UserController {
      * @return ResponseEntity with the result of the followUser operation.
      */
     @PostMapping("/{userId}/follow/{userIdToFollow}")
-    public ResponseEntity<?> followUser(@PathVariable int userId,@PathVariable int userIdToFollow){
+    public ResponseEntity<?> followUser(@PathVariable Integer userId,@PathVariable Integer userIdToFollow){
         return new ResponseEntity<>(userService.followUser(userId,userIdToFollow),HttpStatus.OK);
     }
 }

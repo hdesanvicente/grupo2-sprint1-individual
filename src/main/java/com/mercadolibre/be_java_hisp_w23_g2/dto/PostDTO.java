@@ -19,9 +19,9 @@ import java.time.LocalDate;
 @JsonPropertyOrder({"user_id","post_id","date","product","category","price"})
 public class PostDTO {
     @JsonProperty("user_id")
-    private int userId;
+    private Integer userId;
     @JsonProperty("post_id")
-    private int id;
+    private Integer id;
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern="dd-MM-yyyy")

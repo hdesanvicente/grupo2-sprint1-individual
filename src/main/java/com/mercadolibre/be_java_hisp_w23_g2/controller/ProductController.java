@@ -45,7 +45,7 @@ public class ProductController {
      * @return ResponseEntity with the result of the getPostsByFollowedUsers operation.
      */
     @GetMapping("/followed/{userId}/list")
-    public ResponseEntity<?> getPostsByFollowedUsers(@PathVariable int userId, @RequestParam(required = false) String order) {
+    public ResponseEntity<?> getPostsByFollowedUsers(@PathVariable Integer userId, @RequestParam(required = false) String order) {
         return new ResponseEntity<>(userService.getPostsByFollowedUsers(userId, order), HttpStatus.OK);
     }
 }
