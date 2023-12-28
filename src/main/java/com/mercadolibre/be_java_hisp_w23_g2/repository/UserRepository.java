@@ -1,5 +1,7 @@
 package com.mercadolibre.be_java_hisp_w23_g2.repository;
 
+import static java.util.stream.Collectors.*;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.Post;
@@ -110,13 +112,13 @@ public class UserRepository implements IUserRepository {
           List<User> finalUsers = List.copyOf(usersList);
           user.setFollowers(user.getFollowers().stream().map(
               u -> finalUsers.stream().filter(u1 -> u.getId().equals(u1.getId())).findFirst()
-                  .orElse(null)).toList());
+                  .orElse(null)).collect(toList()));
         }
         for (int j = 0; j < user.getFollowed().size(); j++) {
           List<User> finalUsers = List.copyOf(usersList);
           user.setFollowed(user.getFollowed().stream().map(
               u -> finalUsers.stream().filter(u1 -> u.getId().equals(u1.getId())).findFirst()
-                  .orElse(null)).toList());
+                  .orElse(null)).collect(toList()));
         }
       }
     } catch (IOException e) {
