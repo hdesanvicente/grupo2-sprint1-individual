@@ -18,11 +18,6 @@ public class ProductBasicDTO {
   @JsonProperty("product_id")
   private Integer id;
 
-  @NotEmpty(message = "El id no puede estar vacío")
-  @Positive(message = "El id debe ser mayor a cero")
-  @JsonProperty("product_id")
-  private Integer id;
-
   @NotEmpty(message = "El nombre no puede estar vacío")
   @Size(max = 40, message = "La longitud del nombre no puede superar los 40 caracteres")
   @Pattern(regexp = "^[a-zA-Z0-9 ]+$", message = "El nombre no puede poseer caracteres especiales")

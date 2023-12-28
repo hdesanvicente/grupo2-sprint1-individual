@@ -32,14 +32,11 @@ public class PostDTO {
     @JsonFormat(pattern="dd-MM-yyyy")
     private LocalDate date;
 
-  @NotEmpty(message = "La fecha no puede estar vacía")
-  @JsonDeserialize(using = LocalDateDeserializer.class)
-  @JsonSerialize(using = LocalDateSerializer.class)
-  @JsonFormat(pattern = "dd-MM-yyyy")
-  private LocalDate date;
+    @Valid
+    private ProductBasicDTO product;
 
-  @Valid
-  private ProductBasicDTO product;
+    @NotEmpty(message = "La categoría no puede estar vacía")
+    private String category;
 
     @NotNull(message = "El precio no puede estar vacío")
     @Max(value = 10000000, message = "El precio máximo por producto es de 10.000.000")
