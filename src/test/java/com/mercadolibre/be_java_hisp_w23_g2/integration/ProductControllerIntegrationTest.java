@@ -10,14 +10,14 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 class ProductControllerIntegrationTest {
 
-    @Autowired
-    MockMvc mockMvc;
+  @Autowired
+  MockMvc mockMvc;
 
-    @Test
-    void addPost() {
-    }
+  @Test
+  void addPost() {
+  }
 
-    @Test
-    void getPostsByFollowedUsers() {
-    }
+  @Test
+  void getPostsByFollowedUsers() {
+  }
 }

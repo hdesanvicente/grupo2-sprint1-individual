@@ -10,30 +10,30 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 class UserControllerIntegrationTest {
 
-    @Autowired
-    MockMvc mockMvc;
+  @Autowired
+  MockMvc mockMvc;
 
-    @Test
-    void getFollowersCountSeller() {
-    }
+  @Test
+  void getFollowersCountSeller() {
+  }
 
-    @Test
-    void getFollowersUser() {
-    }
+  @Test
+  void getFollowersUser() {
+  }
 
-    @Test
-    void unfollowUser() {
-    }
+  @Test
+  void unfollowUser() {
+  }
 
-    @Test
-    void getFollowedUser() {
-    }
+  @Test
+  void getFollowedUser() {
+  }
 
-    @Test
-    void getAll() {
-    }
+  @Test
+  void getAll() {
+  }
 
-    @Test
-    void followUser() {
-    }
+  @Test
+  void followUser() {
+  }
 }
