@@ -7,26 +7,26 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonPropertyOrder({"user_id","post_id","date","product","category","price"})
+@JsonPropertyOrder({"user_id", "post_id", "date", "product", "category", "price"})
 public class PostDTO {
-    @JsonProperty("user_id")
-    private Integer userId;
-    @JsonProperty("post_id")
-    private Integer id;
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern="dd-MM-yyyy")
-    private LocalDate date;
-    private ProductDTO product;
-    private String category;
-    private double price;
+
+  @JsonProperty("user_id")
+  private Integer userId;
+  @JsonProperty("post_id")
+  private Integer id;
+  @JsonDeserialize(using = LocalDateDeserializer.class)
+  @JsonSerialize(using = LocalDateSerializer.class)
+  @JsonFormat(pattern = "dd-MM-yyyy")
+  private LocalDate date;
+  private ProductDTO product;
+  private String category;
+  private double price;
 }
