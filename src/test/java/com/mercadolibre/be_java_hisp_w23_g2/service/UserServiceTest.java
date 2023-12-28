@@ -7,13 +7,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mercadolibre.be_java_hisp_w23_g2.dto.MessageDTO;
-import com.mercadolibre.be_java_hisp_w23_g2.dto.PostDTO;
-import com.mercadolibre.be_java_hisp_w23_g2.dto.PostFollowedDTO;
-import com.mercadolibre.be_java_hisp_w23_g2.dto.UserDTO;
-import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowedDTO;
-import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowersCountDTO;
-import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowersDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.PostBasicDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.UserBasicDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.responses.MessageDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.responses.PostsFollowedDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.responses.UserFollowedDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.responses.UserFollowersCountDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.responses.UserFollowersDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.Post;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.Product;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.User;
@@ -70,30 +70,6 @@ class UserServiceTest {
   }
 
   @Test
-  void getFollowersCountSeller() {
-  }
-
-  @Test
-  void getAll() {
-  }
-
-  @Test
-  void getFollowersUser() {
-  }
-
-  @Test
-  void getFollowedUser() {
-  }
-
-  @Test
-  void unfollowUser() {
-  }
-
-  @Test
-  void followUser() {
-  }
-
-  @Test
   @DisplayName("Test method to obtain posts with the last two weeks old")
   void getPostsWithLastTwoWeeksOld() {
     //Arrange
@@ -119,16 +95,16 @@ class UserServiceTest {
     user.setFollowed(List.of(follower1, follower2));
 
     ObjectMapper mapper = new ObjectMapper();
-    List<PostDTO> postDTOS = Stream.of(post21, post22, post23, post31, post33)
-        .map(post -> mapper.convertValue(post, PostDTO.class)).toList();
+    List<PostBasicDTO> postDTOS = Stream.of(post21, post22, post23, post31, post33)
+        .map(post -> mapper.convertValue(post, PostBasicDTO.class)).toList();
 
-    PostFollowedDTO followedDTO = new PostFollowedDTO(user.getId(), postDTOS);
+    PostsFollowedDTO followedDTO = new PostsFollowedDTO(user.getId(), postDTOS);
 
     when(repository.findUserById(1)).thenReturn(user);
     when(repository.findUserById(2)).thenReturn(follower1);
     when(repository.findUserById(3)).thenReturn(follower2);
     //Act
-    PostFollowedDTO result = service.getPostsByFollowedUsers(user.getId(), null);
+    PostsFollowedDTO result = service.getPostsByFollowedUsers(user.getId(), null);
     //Assert
     Assertions.assertEquals(followedDTO, result);
   }
@@ -142,8 +118,7 @@ class UserServiceTest {
             new User(96, "tomHoland87", null, null, null)), null);
 
     UserFollowersDTO expected = new UserFollowersDTO(1, "melilackington",
-        List.of(new UserDTO(96, "tomHoland87"),
-            new UserDTO(54, "zendaya99")));
+        List.of(new UserBasicDTO(96, "tomHoland87"), new UserBasicDTO(54, "zendaya99")));
 
     when(repository.findUserById(1)).thenReturn(user_test);
 
@@ -164,8 +139,7 @@ class UserServiceTest {
             new User(96, "tomHoland87", null, null, null)), null);
 
     UserFollowersDTO expected = new UserFollowersDTO(1, "melilackington",
-        List.of(new UserDTO(54, "zendaya99"),
-            new UserDTO(96, "tomHoland87")));
+        List.of(new UserBasicDTO(54, "zendaya99"), new UserBasicDTO(96, "tomHoland87")));
 
     when(repository.findUserById(1)).thenReturn(user_test);
 
@@ -211,7 +185,7 @@ class UserServiceTest {
     when(repository.followUser(2, 1)).thenReturn(userToFollow);
 
     UserFollowedDTO expected = new UserFollowedDTO(1, "John Doe",
-        new ArrayList<>(List.of(new UserDTO(2, "Alice Smith"))));
+        new ArrayList<>(List.of(new UserBasicDTO(2, "Alice Smith"))));
 
     // ACT
     UserFollowedDTO result = service.followUser(2, 1);
@@ -290,8 +264,7 @@ class UserServiceTest {
             new User(96, "tomHoland87", null, null, null)));
 
     UserFollowedDTO expected = new UserFollowedDTO(1, "melilackington",
-        List.of(new UserDTO(96, "tomHoland87"),
-            new UserDTO(54, "zendaya99")));
+        List.of(new UserBasicDTO(96, "tomHoland87"), new UserBasicDTO(54, "zendaya99")));
 
     when(repository.findUserById(1)).thenReturn(user_test);
 
@@ -312,8 +285,7 @@ class UserServiceTest {
             new User(96, "tomHoland87", null, null, null)));
 
     UserFollowedDTO expected = new UserFollowedDTO(1, "melilackington",
-        List.of(new UserDTO(54, "zendaya99"),
-            new UserDTO(96, "tomHoland87")));
+        List.of(new UserBasicDTO(54, "zendaya99"), new UserBasicDTO(96, "tomHoland87")));
 
     when(repository.findUserById(1)).thenReturn(user_test);
 
@@ -417,17 +389,18 @@ class UserServiceTest {
     user.setFollowed(List.of(follower1));
 
     ObjectMapper mapper = new ObjectMapper();
-    List<PostDTO> postDTOS = new ArrayList<>(Stream.of(post21, post22)
-        .map(post -> mapper.convertValue(post, PostDTO.class)).toList());
-    postDTOS.sort(Comparator.comparing(PostDTO::getDate));
+    List<PostBasicDTO> postDTOS = new ArrayList<>(
+        Stream.of(post21, post22).map(post -> mapper.convertValue(post, PostBasicDTO.class))
+            .toList());
+    postDTOS.sort(Comparator.comparing(PostBasicDTO::getDate));
 
-    PostFollowedDTO followedDTO = new PostFollowedDTO(user.getId(), postDTOS);
+    PostsFollowedDTO followedDTO = new PostsFollowedDTO(user.getId(), postDTOS);
 
     when(repository.findUserById(1)).thenReturn(user);
     when(repository.findUserById(2)).thenReturn(follower1);
 
     // Act
-    PostFollowedDTO result = service.getPostsByFollowedUsers(user.getId(), "date_asc");
+    PostsFollowedDTO result = service.getPostsByFollowedUsers(user.getId(), "date_asc");
 
     // Assert
     assertNotNull(result);
@@ -450,17 +423,18 @@ class UserServiceTest {
     user.setFollowed(List.of(follower1));
 
     ObjectMapper mapper = new ObjectMapper();
-    List<PostDTO> postDTOS = new ArrayList<>(Stream.of(post21, post22)
-        .map(post -> mapper.convertValue(post, PostDTO.class)).toList());
-    postDTOS.sort(Comparator.comparing(PostDTO::getDate).reversed());
+    List<PostBasicDTO> postDTOS = new ArrayList<>(
+        Stream.of(post21, post22).map(post -> mapper.convertValue(post, PostBasicDTO.class))
+            .toList());
+    postDTOS.sort(Comparator.comparing(PostBasicDTO::getDate).reversed());
 
-    PostFollowedDTO followedDTO = new PostFollowedDTO(user.getId(), postDTOS);
+    PostsFollowedDTO followedDTO = new PostsFollowedDTO(user.getId(), postDTOS);
 
     when(repository.findUserById(1)).thenReturn(user);
     when(repository.findUserById(2)).thenReturn(follower1);
 
     // Act
-    PostFollowedDTO result = service.getPostsByFollowedUsers(user.getId(), "date_desc");
+    PostsFollowedDTO result = service.getPostsByFollowedUsers(user.getId(), "date_desc");
 
     // Assert
     assertNotNull(result);
@@ -470,9 +444,9 @@ class UserServiceTest {
   @DisplayName("T-0005: Test method to verify that the type of sort by date do not exists")
   void verifyTypeSortingExistsExceptionTest() {
     // Arrange
-    Integer id = 1;
     User user = new User();
     User follower1 = new User();
+    Integer id = 1;
     user.setId(id);
     follower1.setId(2);
 
@@ -484,18 +458,18 @@ class UserServiceTest {
     user.setFollowed(List.of(follower1));
 
     ObjectMapper mapper = new ObjectMapper();
-    List<PostDTO> postDTOS = new ArrayList<>(Stream.of(post21, post22)
-        .map(post -> mapper.convertValue(post, PostDTO.class)).toList());
-    postDTOS.sort(Comparator.comparing(PostDTO::getDate).reversed());
+    List<PostBasicDTO> postDTOS = new ArrayList<>(
+        Stream.of(post21, post22).map(post -> mapper.convertValue(post, PostBasicDTO.class))
+            .toList());
+    postDTOS.sort(Comparator.comparing(PostBasicDTO::getDate).reversed());
 
-    PostFollowedDTO followedDTO = new PostFollowedDTO(id, postDTOS);
+    PostsFollowedDTO followedDTO = new PostsFollowedDTO(user.getId(), postDTOS);
 
     when(repository.findUserById(1)).thenReturn(user);
     when(repository.findUserById(2)).thenReturn(follower1);
 
     // Act & Assert
-    assertThrows(BadRequestException.class,
-        () -> service.getPostsByFollowedUsers(id, "fake"));
+    assertThrows(BadRequestException.class, () -> service.getPostsByFollowedUsers(id, "fake"));
   }
 
   @Test
@@ -524,19 +498,19 @@ class UserServiceTest {
     user.setFollowed(List.of(follower1, follower2));
 
     ObjectMapper mapper = new ObjectMapper();
-    List<PostDTO> postDTOS = new ArrayList<>(
+    List<PostBasicDTO> postDTOS = new ArrayList<>(
         Stream.of(post21, post22, post23, post24, post31, post32, post33)
-            .map(post -> mapper.convertValue(post, PostDTO.class)).toList());
-    postDTOS.sort(Comparator.comparing(PostDTO::getDate));
+            .map(post -> mapper.convertValue(post, PostBasicDTO.class)).toList());
+    postDTOS.sort(Comparator.comparing(PostBasicDTO::getDate));
 
-    PostFollowedDTO followedDTO = new PostFollowedDTO(user.getId(), postDTOS);
+    PostsFollowedDTO followedDTO = new PostsFollowedDTO(user.getId(), postDTOS);
 
     when(repository.findUserById(1)).thenReturn(user);
     when(repository.findUserById(2)).thenReturn(follower1);
     when(repository.findUserById(3)).thenReturn(follower2);
 
     // Act
-    PostFollowedDTO result = service.getPostsByFollowedUsers(user.getId(), "date_asc");
+    PostsFollowedDTO result = service.getPostsByFollowedUsers(user.getId(), "date_asc");
 
     // Assert
     assertEquals(followedDTO, result);
@@ -568,19 +542,19 @@ class UserServiceTest {
     user.setFollowed(List.of(follower1, follower2));
 
     ObjectMapper mapper = new ObjectMapper();
-    List<PostDTO> postDTOS = new ArrayList<>(
+    List<PostBasicDTO> postDTOS = new ArrayList<>(
         Stream.of(post21, post22, post23, post24, post31, post32, post33)
-            .map(post -> mapper.convertValue(post, PostDTO.class)).toList());
-    postDTOS.sort(Comparator.comparing(PostDTO::getDate).reversed());
+            .map(post -> mapper.convertValue(post, PostBasicDTO.class)).toList());
+    postDTOS.sort(Comparator.comparing(PostBasicDTO::getDate).reversed());
 
-    PostFollowedDTO followedDTO = new PostFollowedDTO(user.getId(), postDTOS);
+    PostsFollowedDTO followedDTO = new PostsFollowedDTO(user.getId(), postDTOS);
 
     when(repository.findUserById(1)).thenReturn(user);
     when(repository.findUserById(2)).thenReturn(follower1);
     when(repository.findUserById(3)).thenReturn(follower2);
 
     // Act
-    PostFollowedDTO result = service.getPostsByFollowedUsers(user.getId(), "date_desc");
+    PostsFollowedDTO result = service.getPostsByFollowedUsers(user.getId(), "date_desc");
 
     // Assert
     assertEquals(followedDTO, result);

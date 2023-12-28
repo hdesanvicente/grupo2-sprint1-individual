@@ -1,4 +1,4 @@
-package com.mercadolibre.be_java_hisp_w23_g2.dto;
+package com.mercadolibre.be_java_hisp_w23_g2.dto.responses;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

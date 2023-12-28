@@ -1,11 +1,14 @@
 package com.mercadolibre.be_java_hisp_w23_g2.controller;
 
 
-import com.mercadolibre.be_java_hisp_w23_g2.dto.PostDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.requests.PostDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.responses.MessageDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.responses.PostsFollowedDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.service.IProductService;
 import com.mercadolibre.be_java_hisp_w23_g2.service.IUserService;
-import org.springframework.http.HttpStatus;
+import javax.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/products")
+@Validated
 public class ProductController {
 
   private final IProductService productService;
@@ -36,8 +40,8 @@ public class ProductController {
    * @return ResponseEntity with the result of the addPost operation.
    */
   @PostMapping("/post")
-  public ResponseEntity<?> addPost(@RequestBody PostDTO postDto) {
-    return new ResponseEntity<>(productService.addPost(postDto), HttpStatus.OK);
+  public ResponseEntity<MessageDTO> addPost(@RequestBody @Valid PostDTO postDto) {
+    return ResponseEntity.ok(productService.addPost(postDto));
   }
 
   /**
@@ -48,8 +52,8 @@ public class ProductController {
    * @return ResponseEntity with the result of the getPostsByFollowedUsers operation.
    */
   @GetMapping("/followed/{userId}/list")
-  public ResponseEntity<?> getPostsByFollowedUsers(@PathVariable Integer userId,
+  public ResponseEntity<PostsFollowedDTO> getPostsByFollowedUsers(@PathVariable Integer userId,
       @RequestParam(required = false) String order) {
-    return new ResponseEntity<>(userService.getPostsByFollowedUsers(userId, order), HttpStatus.OK);
+    return ResponseEntity.ok(userService.getPostsByFollowedUsers(userId, order));
   }
 }

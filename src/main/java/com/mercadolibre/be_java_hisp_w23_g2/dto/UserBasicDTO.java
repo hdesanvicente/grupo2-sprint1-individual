@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserDTO {
+public class UserBasicDTO {
 
   @JsonProperty("user_id")
   private Integer id;

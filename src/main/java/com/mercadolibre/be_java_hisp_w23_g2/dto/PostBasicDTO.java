@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonPropertyOrder({"user_id", "post_id", "date", "product", "category", "price"})
-public class PostDTO {
+public class PostBasicDTO {
 
   @JsonProperty("user_id")
   private Integer userId;
@@ -26,7 +26,7 @@ public class PostDTO {
   @JsonSerialize(using = LocalDateSerializer.class)
   @JsonFormat(pattern = "dd-MM-yyyy")
   private LocalDate date;
-  private ProductDTO product;
+    private ProductBasicDTO product;
   private String category;
   private double price;
 }

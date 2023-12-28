@@ -1,11 +1,11 @@
 package com.mercadolibre.be_java_hisp_w23_g2.service;
 
-import com.mercadolibre.be_java_hisp_w23_g2.dto.MessageDTO;
-import com.mercadolibre.be_java_hisp_w23_g2.dto.PostFollowedDTO;
-import com.mercadolibre.be_java_hisp_w23_g2.dto.UserDTO;
-import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowedDTO;
-import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowersCountDTO;
-import com.mercadolibre.be_java_hisp_w23_g2.dto.UserFollowersDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.UserBasicDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.responses.MessageDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.responses.PostsFollowedDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.responses.UserFollowedDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.responses.UserFollowersCountDTO;
+import com.mercadolibre.be_java_hisp_w23_g2.dto.responses.UserFollowersDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.Post;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.User;
 import com.mercadolibre.be_java_hisp_w23_g2.exception.BadRequestException;
@@ -52,7 +52,7 @@ public class UserService implements IUserService {
    *
    * @return List of UserDTOs representing all users.
    */
-  public List<UserDTO> getAll() {
+  public List<UserBasicDTO> getAll() {
     List<User> users = userRepository.getAll();
 
     return users.stream().map(Mapper::mapUserDTO).toList();
@@ -142,7 +142,7 @@ public class UserService implements IUserService {
     validateUserExistence(user2, userIdToFollow, "To Follow");
 
     if (user.getFollowed().contains(userRepository.findUserById(userIdToFollow))) {
-      throw new BadRequestException("The user " + userId + " allready follow " + userIdToFollow);
+      throw new BadRequestException("The user " + userId + " already follow " + userIdToFollow);
     }
 
     return Mapper.mapUserFollowedDTO(userRepository.followUser(userId, userIdToFollow));
@@ -156,7 +156,7 @@ public class UserService implements IUserService {
    * @return PostFollowedDTO containing the list of posts from followed users.
    */
   @Override
-  public PostFollowedDTO getPostsByFollowedUsers(Integer userId, String sortType) {
+  public PostsFollowedDTO getPostsByFollowedUsers(Integer userId, String sortType) {
     User user = userRepository.findUserById(userId);
     validateUserExistence(user, userId, USER_TYPE);
 

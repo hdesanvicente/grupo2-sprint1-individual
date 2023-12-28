@@ -1,7 +1,5 @@
 package com.mercadolibre.be_java_hisp_w23_g2.repository;
 
-import static java.util.stream.Collectors.*;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.be_java_hisp_w23_g2.entity.Post;
@@ -10,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
@@ -20,9 +19,15 @@ import org.springframework.util.ResourceUtils;
 public class UserRepository implements IUserRepository {
 
   private final List<User> users;
+  private Integer lastPostId;
 
   public UserRepository() throws IOException {
     users = loadData();
+
+    lastPostId = users.stream()
+        .flatMap(user -> user.getPosts().stream())
+        .mapToInt(Post::getId)
+        .reduce(0, Integer::max);
   }
 
   /**
@@ -33,7 +38,11 @@ public class UserRepository implements IUserRepository {
    */
   @Override
   public User findUserById(int id) {
-    return users.stream().filter(user -> user.getId() == id).findFirst().orElse(null);
+    return users
+        .stream()
+        .filter(user -> user.getId() == id)
+        .findFirst()
+        .orElse(null);
   }
 
   /**
@@ -54,6 +63,7 @@ public class UserRepository implements IUserRepository {
    */
   @Override
   public void addPost(User user, Post post) {
+    post.setId(++lastPostId);
     user.getPosts().add(post);
   }
 
@@ -110,15 +120,15 @@ public class UserRepository implements IUserRepository {
       for (User user : usersList) {
         for (int j = 0; j < user.getFollowers().size(); j++) {
           List<User> finalUsers = List.copyOf(usersList);
-          user.setFollowers(user.getFollowers().stream().map(
-              u -> finalUsers.stream().filter(u1 -> u.getId().equals(u1.getId())).findFirst()
-                  .orElse(null)).collect(toList()));
+          user.setFollowers(user.getFollowers().stream().map(u -> finalUsers
+                  .stream().filter(u1 -> u.getId().equals(u1.getId())).findFirst().orElse(null))
+              .collect(Collectors.toList()));
         }
         for (int j = 0; j < user.getFollowed().size(); j++) {
           List<User> finalUsers = List.copyOf(usersList);
-          user.setFollowed(user.getFollowed().stream().map(
-              u -> finalUsers.stream().filter(u1 -> u.getId().equals(u1.getId())).findFirst()
-                  .orElse(null)).collect(toList()));
+          user.setFollowed(user.getFollowed().stream().map(u -> finalUsers
+                  .stream().filter(u1 -> u.getId().equals(u1.getId())).findFirst().orElse(null))
+              .collect(Collectors.toList()));
         }
       }
     } catch (IOException e) {
