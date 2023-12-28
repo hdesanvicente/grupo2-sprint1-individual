@@ -11,6 +11,7 @@ import com.mercadolibre.be_java_hisp_w23_g2.utils.Mapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -42,7 +43,7 @@ public class ProductService implements IProductService {
         // Check that there is no product with this id
         List<Post> postsUser = user.getPosts();
         Optional<Post> postExist = postsUser.stream()
-                                    .filter(p -> p.getProduct().getId() == post.getProduct().getId()).findFirst();
+                                    .filter(p -> Objects.equals(p.getProduct().getId(), post.getProduct().getId())).findFirst();
         if (postExist.isPresent()) {
             throw new BadRequestException("The product id already exists.");
         }

@@ -29,9 +29,6 @@ public class PostDTO {
     @JsonProperty("user_id")
     private Integer userId;
 
-    @JsonProperty("post_id")
-    private Integer id;
-
     @NotEmpty(message = "La fecha no puede estar vacía")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
