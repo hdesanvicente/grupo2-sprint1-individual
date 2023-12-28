@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonPropertyOrder({"user_id","post_id","date","product","category","price"})
-public class PostDTO {
+public class PostBasicDTO {
     @JsonProperty("user_id")
     private Integer userId;
     @JsonProperty("post_id")
@@ -26,7 +26,7 @@ public class PostDTO {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern="dd-MM-yyyy")
     private LocalDate date;
-    private ProductDTO product;
+    private ProductBasicDTO product;
     private String category;
     private double price;
 }
