@@ -1,5 +1,6 @@
 package com.mercadolibre.be_java_hisp_w23_g2.exception;
 
+import com.mercadolibre.be_java_hisp_w23_g2.dto.responses.ErrorDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.responses.MessageDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,6 +8,9 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Global exception handler for handling specific exceptions and providing standardized responses.
@@ -52,9 +56,19 @@ public class ExceptionConfig {
      * @param e The MethodArgumentNotValidException that occurred.
      * @return ResponseEntity with BAD_REQUEST status and a MessageDTO.
      */
-    @ExceptionHandler
-    public ResponseEntity<?> validationException(MethodArgumentNotValidException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageDTO(e.getMessage()));
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> customHandleNotValidException(
+            MethodArgumentNotValidException e) {
+
+        List<String> messages = new ArrayList<>();
+        e.getBindingResult().getFieldErrors().forEach(fieldError ->
+                messages.add(fieldError.getDefaultMessage()));
+
+        ErrorDTO errorDto = new ErrorDTO();
+        errorDto.setExplanation("Se encontraron errores de validación");
+        errorDto.setMessage(messages);
+
+        return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -63,7 +77,7 @@ public class ExceptionConfig {
      * @param e The HttpMessageNotReadableException that occurred.
      * @return ResponseEntity with BAD_REQUEST status and a MessageDTO.
      */
-    @ExceptionHandler
+    @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> validationException(HttpMessageNotReadableException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageDTO(e.getMessage()));
     }

@@ -2,6 +2,7 @@ package com.mercadolibre.be_java_hisp_w23_g2.controller;
 
 
 import com.mercadolibre.be_java_hisp_w23_g2.service.IUserService;
+import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.requests.PostDTO;
@@ -13,14 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
+
 
 /**
  * Controller class for handling product-related operations.
  */
 @RestController
 @RequestMapping("/products")
-@Validated
 public class ProductController {
     private final IProductService productService;
     private final IUserService userService;
@@ -38,6 +38,7 @@ public class ProductController {
      */
     @PostMapping("/post")
     public ResponseEntity<?> addPost(@RequestBody @Valid PostDTO postDto) {
+        System.out.println("No debería llegar acá con validations erroneas");
         return new ResponseEntity<>(productService.addPost(postDto), HttpStatus.OK);
     }
 
