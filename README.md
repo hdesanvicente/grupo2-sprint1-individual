@@ -53,11 +53,43 @@ The be_java_hisp_w23_g2 project is a social platform that allows users to follow
   - Endpoint perform the “List the products from followed in date order” action to a user
   - Responsible: [Hernan De San Vicente]
 
+## Test
+- [T-0001]
+  - Verify that the user to follow exists.
+  - Responsible: [Jannett Aquino]
+- [T-0002]
+  - Verify that the user to unfollow exists.
+  - Responsible: [Jannett Aquino]
+- [T-0003]
+  - Validates that alphabetical order exists.
+  - Responsible: [Martin Lackington]
+- [T-0004]
+  - Validates that alphabetical order exists on getFollowersUser.
+  - Responsible: [Martin Lackington]
+- [T-0005]
+  - Test method to verify that the type of ascending sort by date exists.
+  - Responsible: [Marcos Costanzo]
+- [T-0006]
+  - Test method to verify correct ascending order by date.
+  - Responsible: [Marcos Costanzo]
+- [T-0007]
+  - Followers count seller OK.
+  - Responsible: [Claudia Vargas]
+- [T-0008]
+  - Test method to obtain posts with the last two weeks old.
+  - Responsible: [Felipe Costa]
+- [Validations]
+  - Add validations in dtos classes to perform the code. 
+  - Responsible: [Hernan De San Vicente]
+
 ## Technologies Used
 - Java
 - Spring Boot
+- Javax
+- Hibernate
 - Maven
 - JSON (for data storage)
+- SonarLint
 
 ## Project Structure
 ![Project Structure](images/project-structure.png)
