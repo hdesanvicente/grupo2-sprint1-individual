@@ -19,9 +19,15 @@ import java.util.stream.Collectors;
 @Repository
 public class UserRepository implements IUserRepository {
     private final List<User> users;
+    private Integer lastPostId;
 
     public UserRepository() throws IOException {
         users = loadData();
+
+        lastPostId = users.stream()
+                .flatMap(user -> user.getPosts().stream())
+                .mapToInt(Post::getId)
+                .reduce(0, Integer::max);
     }
 
     /**
@@ -57,6 +63,7 @@ public class UserRepository implements IUserRepository {
      */
     @Override
     public void addPost(User user, Post post) {
+        post.setId(++lastPostId);
         user.getPosts().add(post);
     }
 
