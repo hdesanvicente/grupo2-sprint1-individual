@@ -140,7 +140,7 @@ public class UserService implements IUserService {
         validateUserExistence(user2, userIdToFollow, "To Follow");
 
         if (user.getFollowed().contains(userRepository.findUserById(userIdToFollow))) {
-            throw new BadRequestException("The user " + userId + " allready follow " + userIdToFollow);
+            throw new BadRequestException("The user " + userId + " already follow " + userIdToFollow);
         }
 
         return Mapper.mapUserFollowedDTO(userRepository.followUser(userId,userIdToFollow));
