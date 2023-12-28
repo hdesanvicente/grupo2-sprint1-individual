@@ -2,6 +2,7 @@ package com.mercadolibre.be_java_hisp_w23_g2.controller;
 
 
 import com.mercadolibre.be_java_hisp_w23_g2.service.IUserService;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.mercadolibre.be_java_hisp_w23_g2.dto.requests.PostDTO;
 import com.mercadolibre.be_java_hisp_w23_g2.service.IProductService;
@@ -19,6 +20,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/products")
+@Validated
 public class ProductController {
     private final IProductService productService;
     private final IUserService userService;
