@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonPropertyOrder({"user_id","post_id","date","product","category","price"})
+@JsonPropertyOrder({"user_id", "post_id", "date", "product", "category", "price"})
 public class PostDTO {
     @NotNull(message = "El id no puede estar vacío")
     @Positive(message = "El id debe ser mayor a cero")
@@ -32,11 +32,14 @@ public class PostDTO {
     @JsonFormat(pattern="dd-MM-yyyy")
     private LocalDate date;
 
-    @Valid
-    private ProductBasicDTO product;
+  @NotEmpty(message = "La fecha no puede estar vacía")
+  @JsonDeserialize(using = LocalDateDeserializer.class)
+  @JsonSerialize(using = LocalDateSerializer.class)
+  @JsonFormat(pattern = "dd-MM-yyyy")
+  private LocalDate date;
 
-    @NotEmpty(message = "La categoría no puede estar vacía")
-    private String category;
+  @Valid
+  private ProductBasicDTO product;
 
     @NotNull(message = "El precio no puede estar vacío")
     @Max(value = 10000000, message = "El precio máximo por producto es de 10.000.000")
