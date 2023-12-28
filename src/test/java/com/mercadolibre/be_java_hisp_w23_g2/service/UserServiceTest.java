@@ -488,5 +488,90 @@ class UserServiceTest {
         assertThrows(BadRequestException.class, () -> service.getPostsByFollowedUsers(user.getId(), "fake"));
     }
 
+    @Test
+    @DisplayName("T-0006: Test method to verify correct ascending order by date")
+    void verifyAscSortingByDateTest() {
+        // Arrange
+        User user = new User();
+        User follower1 = new User();
+        User follower2 = new User();
+        user.setId(1);
+        follower1.setId(2);
+        follower2.setId(3);
+
+        Post post21 = new Post(1, 2, LocalDate.now().minusWeeks(1), new Product(), null, 0.0);
+        Post post22 = new Post(2, 2, LocalDate.now().minusDays(5), new Product(), null, 0.0);
+        Post post23 = new Post(3, 2, LocalDate.now().minusDays(11), new Product(), null, 0.0);
+        Post post24 = new Post(4, 2, LocalDate.now().minusDays(12), new Product(), null, 0.0);
+
+        Post post31 = new Post(1, 3, LocalDate.now().minusWeeks(1), new Product(), null, 0.0);
+        Post post32 = new Post(2, 3, LocalDate.now().minusDays(13), new Product(), null, 0.0);
+        Post post33 = new Post(3, 3, LocalDate.now().minusDays(10), new Product(), null, 0.0);
+
+        follower1.setPosts(new ArrayList<>(Arrays.asList(post21, post22, post23, post24)));
+        follower2.setPosts(new ArrayList<>(Arrays.asList(post31, post32,post33)));
+
+        user.setFollowed(List.of(follower1, follower2));
+
+        ObjectMapper mapper = new ObjectMapper();
+        List<PostDTO> postDTOS = new ArrayList<>(Stream.of(post21, post22, post23, post24, post31, post32, post33)
+                .map(post -> mapper.convertValue(post, PostDTO.class)).toList());
+        postDTOS.sort(Comparator.comparing(PostDTO::getDate));
+
+        PostFollowedDTO followedDTO = new PostFollowedDTO(user.getId(), postDTOS);
+
+        when(repository.findUserById(1)).thenReturn(user);
+        when(repository.findUserById(2)).thenReturn(follower1);
+        when(repository.findUserById(3)).thenReturn(follower2);
+
+        // Act
+        PostFollowedDTO result = service.getPostsByFollowedUsers(user.getId(), "date_asc");
+
+        // Assert
+        assertEquals(followedDTO,result);
+    }
+
+    @Test
+    @DisplayName("T-0006: Test method to verify correct descending order by date")
+    void verifyDescSortingByDateTest() {
+        // Arrange
+        User user = new User();
+        User follower1 = new User();
+        User follower2 = new User();
+        user.setId(1);
+        follower1.setId(2);
+        follower2.setId(3);
+
+        Post post21 = new Post(1, 2, LocalDate.now().minusWeeks(1), new Product(), null, 0.0);
+        Post post22 = new Post(2, 2, LocalDate.now().minusDays(5), new Product(), null, 0.0);
+        Post post23 = new Post(3, 2, LocalDate.now().minusDays(11), new Product(), null, 0.0);
+        Post post24 = new Post(4, 2, LocalDate.now().minusDays(12), new Product(), null, 0.0);
+
+        Post post31 = new Post(1, 3, LocalDate.now().minusWeeks(1), new Product(), null, 0.0);
+        Post post32 = new Post(2, 3, LocalDate.now().minusDays(13), new Product(), null, 0.0);
+        Post post33 = new Post(3, 3, LocalDate.now().minusDays(10), new Product(), null, 0.0);
+
+        follower1.setPosts(new ArrayList<>(Arrays.asList(post21, post22, post23, post24)));
+        follower2.setPosts(new ArrayList<>(Arrays.asList(post31, post32,post33)));
+
+        user.setFollowed(List.of(follower1, follower2));
+
+        ObjectMapper mapper = new ObjectMapper();
+        List<PostDTO> postDTOS = new ArrayList<>(Stream.of(post21, post22, post23, post24, post31, post32, post33)
+                .map(post -> mapper.convertValue(post, PostDTO.class)).toList());
+        postDTOS.sort(Comparator.comparing(PostDTO::getDate).reversed());
+
+        PostFollowedDTO followedDTO = new PostFollowedDTO(user.getId(), postDTOS);
+
+        when(repository.findUserById(1)).thenReturn(user);
+        when(repository.findUserById(2)).thenReturn(follower1);
+        when(repository.findUserById(3)).thenReturn(follower2);
+
+        // Act
+        PostFollowedDTO result = service.getPostsByFollowedUsers(user.getId(), "date_desc");
+
+        // Assert
+        assertEquals(followedDTO,result);
+    }
     
 }
