@@ -22,6 +22,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.LocalDate;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Stream;
@@ -389,4 +391,102 @@ class UserServiceTest {
         //ACT && ASSERT
         assertThrows(BadRequestException.class,()->service.getFollowersUser(1,"cualquier_cosa"));
     }
+
+    @Test
+    @DisplayName("T-0005: Test method to verify that the type of ascending sort by date exists")
+    void verifyTypeAscSortingExistsTest() {
+        // Arrange
+        User user = new User();
+        User follower1 = new User();
+        user.setId(1);
+        follower1.setId(2);
+
+        Post post21 = new Post(1, 2, LocalDate.now().minusWeeks(1), new Product(), null, 0.0);
+        Post post22 = new Post(2, 2, LocalDate.now().minusDays(5), new Product(), null, 0.0);
+
+        follower1.setPosts(new ArrayList<>(Arrays.asList(post21, post22)));
+
+        user.setFollowed(List.of(follower1));
+
+        ObjectMapper mapper = new ObjectMapper();
+        List<PostDTO> postDTOS = new ArrayList<>(Stream.of(post21, post22)
+                .map(post -> mapper.convertValue(post, PostDTO.class)).toList());
+        postDTOS.sort(Comparator.comparing(PostDTO::getDate));
+
+        PostFollowedDTO followedDTO = new PostFollowedDTO(user.getId(), postDTOS);
+
+        when(repository.findUserById(1)).thenReturn(user);
+        when(repository.findUserById(2)).thenReturn(follower1);
+
+        // Act
+        PostFollowedDTO result = service.getPostsByFollowedUsers(user.getId(), "date_asc");
+
+        // Assert
+        assertNotNull(result);
+    }
+
+    @Test
+    @DisplayName("T-0005: Test method to verify that the type of descending sort by date exists")
+    void verifyTypeDescSortingExistsTest() {
+        // Arrange
+        User user = new User();
+        User follower1 = new User();
+        user.setId(1);
+        follower1.setId(2);
+
+        Post post21 = new Post(1, 2, LocalDate.now().minusWeeks(1), new Product(), null, 0.0);
+        Post post22 = new Post(2, 2, LocalDate.now().minusDays(5), new Product(), null, 0.0);
+
+        follower1.setPosts(new ArrayList<>(Arrays.asList(post21, post22)));
+
+        user.setFollowed(List.of(follower1));
+
+        ObjectMapper mapper = new ObjectMapper();
+        List<PostDTO> postDTOS = new ArrayList<>(Stream.of(post21, post22)
+                .map(post -> mapper.convertValue(post, PostDTO.class)).toList());
+        postDTOS.sort(Comparator.comparing(PostDTO::getDate).reversed());
+
+        PostFollowedDTO followedDTO = new PostFollowedDTO(user.getId(), postDTOS);
+
+        when(repository.findUserById(1)).thenReturn(user);
+        when(repository.findUserById(2)).thenReturn(follower1);
+
+        // Act
+        PostFollowedDTO result = service.getPostsByFollowedUsers(user.getId(), "date_desc");
+
+        // Assert
+        assertNotNull(result);
+    }
+
+    @Test
+    @DisplayName("T-0005: Test method to verify that the type of sort by date do not exists")
+    void verifyTypeSortingExistsExceptionTest() {
+        // Arrange
+        User user = new User();
+        User follower1 = new User();
+        user.setId(1);
+        follower1.setId(2);
+
+        Post post21 = new Post(1, 2, LocalDate.now().minusWeeks(1), new Product(), null, 0.0);
+        Post post22 = new Post(2, 2, LocalDate.now().minusDays(5), new Product(), null, 0.0);
+
+        follower1.setPosts(new ArrayList<>(Arrays.asList(post21, post22)));
+
+        user.setFollowed(List.of(follower1));
+
+        ObjectMapper mapper = new ObjectMapper();
+        List<PostDTO> postDTOS = new ArrayList<>(Stream.of(post21, post22)
+                .map(post -> mapper.convertValue(post, PostDTO.class)).toList());
+        postDTOS.sort(Comparator.comparing(PostDTO::getDate).reversed());
+
+        PostFollowedDTO followedDTO = new PostFollowedDTO(user.getId(), postDTOS);
+
+        when(repository.findUserById(1)).thenReturn(user);
+        when(repository.findUserById(2)).thenReturn(follower1);
+
+        // Act & Assert
+        assertThrows(BadRequestException.class, () -> service.getPostsByFollowedUsers(user.getId(), "fake"));
+    }
+
+    
 }
